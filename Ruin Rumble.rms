@@ -361,10 +361,7 @@ create_object WALL
 	actor_area              99 			/* Actor area ID 5 */
 	actor_area_radius       5			/* 5-tile radius for actor area */
 }
-/* 
-	GENERATING OBJECTS INCLUDES: Uses predefined object generation macros
-	These macros handle standard game objects like Town Centers, Villagers, etc.
-*/
+/* Setting up player starting objects from GeneratingObjects.inc */
 #define GNR_NORMALTC					/* Standard Town Center placement */
 #define GNR_STARTVILLS					/* Starting Villagers */
 #define GNR_CLASSICSCOUT				/* Classic Scout placement */
@@ -378,24 +375,24 @@ create_object WALL
 #define GNR_HERD22CLASSIC_B				/* Classic herd placement B */
 
 #define GNR_GIVEHUNT					/* Huntable animals */
-#define GNR_HUNT3OR4CLASSIC				/* Classic hunt placement */
+#define GNR_HUNT5MODERN					/* Modern 5 huntable placement */
 
 #define GNR_GIVERELICS					/* Relic placement */
-#define GNR_RELICMODERN_MEDIUM_SA		/* Modern relic placement for medium maps */
+#define GNR_RELICMODERN_MEDIUM_SA		/* Modern relic placement medium distance in a smaller area */
 #define GNR_RELPLACE_LAYERC				/* Relic placement on LAYER_C terrain */
 
 #define GNR_GIVELURES					/* Lure animals */
-#define GNR_CLASSICLURES				/* Classic lure placement */
+#define GNR_CLASSICLURES				/* Classic lure animal placement */
 
 #define GNR_STARTINGGOLD				/* Starting gold resources */
 #define GNR_STARTINGSTONE				/* Starting stone resources */
 
-#define GNR_STARTGOLD43M				/* Starting gold for 4v3 medium maps */
-#define GNR_STARTSTONE32M				/* Starting stone for 3v2 medium maps */
+#define GNR_STARTGOLD43M				/* Starting gold for 4 objects 3 radius */
+#define GNR_STARTSTONE32M				/* Starting stone for 3 objects 2 radius */
 
-#define GNR_RESSUPERCLOSE				/* Super close resource placement */
+#define GNR_RESCLOSE					/* Close resource placement */
 
-#define GNR_6KER						/* 6 King of the Hill relics */
+#define GNR_6KER						/* 6 Bushes start */
 #define GNR_HOMESTRAGGLE				/* Home straggler trees */
 
 #define GNR_NORMALBIRDS					/* Normal bird placement */
@@ -535,7 +532,7 @@ create_object GOODS
 create_object HOUSE_F 
 {
 	number_of_objects 1			            /* 1 HOUSE_F per group */
-	number_of_groups 25			            /* 25 groups total */
+	number_of_groups 24			            /* 24 groups total */
 	set_scaling_to_map_size			        /* Scales with map size */
 	temp_min_distance_group_placement 4	    /* Avoids other HOUSE_F within 5 tiles */
 	set_gaia_object_only			        /* Belongs to Gaia */
@@ -552,9 +549,9 @@ create_object HOUSE_F
 create_object HOUSE_RUBBLE3 
 {
 	number_of_objects 1			            /* 1 HOUSE_RUBBLE3 per group */
-	number_of_groups 25			            /* 25 groups total */
+	number_of_groups 32			            /* 32 groups total */
 	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 5	    /* Avoids other HOUSE_RUBBLE3 within 5 tiles */
+	temp_min_distance_group_placement 4	    /* Avoids other HOUSE_RUBBLE3 within 5 tiles */
 	set_gaia_object_only			        /* Belongs to Gaia */
 	set_gaia_unconvertible			        /* Cannot be converted */
     make_indestructible
