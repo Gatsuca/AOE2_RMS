@@ -37,10 +37,8 @@ else
 	end_random
 endif
 #include_drs F_seasons.inc
-
 /* Terrain and Object constant declarations */
 #const CLIFF			16		/* CLIFF Tile */
-
 /* Declaration for storing map size scaling value by LENGTH */
 if MAPSIZE_LUDICROUS 		#const LENGTH 480	/* LUDICROUS 480x480 mapsize */
 elseif MAPSIZE_MONSTROUS	#const LENGTH 400	/* MONSTROUS 400x400 mapsize */
@@ -67,7 +65,7 @@ random_placement  						/* Players positioned randomly in circle with variation 
 endif
 ai_info_map_type CUSTOM 0 0 0  			/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=0, ShowType=0 */
 behavior_version 1						/* Used for versioning changes that might affect how existing maps generate */
-water_definition WD_CHOPPY				/* Water texture set for map */
+/* Set water texture set for map based on biome */
 if PH_ALPINE				water_definition WD_CHOPPY	
 elseif PH_ALPINE_B			water_definition WD_CHOPPY	
 elseif PH_SPRING			water_definition WD_CHOPPY	
@@ -228,8 +226,7 @@ create_terrain WOODIES_C
 	spacing_to_specific_terrain 	SHALLOW 2		/* Distance to SHALLOW */
 	beach_terrain  					DLC_REEDSBEACH	/* Which beach terrain to display for this terrain */
 }
-/* Seasonal Terrain Mixing for Land Decor */
-/* Mix Terrain 2 - Secondary seasonal accent */
+/* Seasonal terrain mixing for land Decor */
 create_terrain LAYER_B
 {
 	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
@@ -239,7 +236,6 @@ create_terrain LAYER_B
 	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
 	beach_terrain  				DLC_GRAVELBEACH		/* Which beach terrain to display for this terrain */
 }
-/* Mix Terrain 3 - Dirt/ground variation */
 create_terrain LAYER_C
 {
 	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
@@ -249,7 +245,6 @@ create_terrain LAYER_C
 	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
 	beach_terrain  				DLC_GRAVELBEACH		/* Which beach terrain to display for this terrain */
 }
-/* Mix Terrain 4 - Underbrush/leaves variation */
 create_terrain LAYER_D
 {
 	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
@@ -259,19 +254,20 @@ create_terrain LAYER_D
 	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
 	beach_terrain  				DLC_GRAVELBEACH		/* Which beach terrain to display for this terrain */
 }
+/* Water depth creation */
 create_terrain MED_WATER 
 {
-	base_terrain 				WATER				/* Terrain type to create new terrain from */	
-	land_percent 					8				/* How much MED_WATER is present on terrain in percent */
-	number_of_clumps 				128				/* Number of clumps to be created */
-	spacing_to_other_terrain_types 	2				/* Distance to other terrain types */
+	base_terrain 				WATER			/* Terrain type to create new terrain from */	
+	land_percent 					8			/* How much MED_WATER is present on terrain in percent */
+	number_of_clumps 				128			/* Number of clumps to be created */
+	spacing_to_other_terrain_types 	2			/* Distance to other terrain types */
 }
 create_terrain DEEP_WATER 
 {
-	base_terrain 				MED_WATER			/* Terrain type to create new terrain from */	
-	land_percent 					4				/* How much DEEP_WATER is present on terrain in percent */
-	number_of_clumps 				128				/* Number of clumps to be created */
-	spacing_to_other_terrain_types 	2				/* Distance to other terrain types */
+	base_terrain 				MED_WATER		/* Terrain type to create new terrain from */	
+	land_percent 					4			/* How much DEEP_WATER is present on terrain in percent */
+	number_of_clumps 				128			/* Number of clumps to be created */
+	spacing_to_other_terrain_types 	2			/* Distance to other terrain types */
 }
 
 /* CONNECTION_GENERATION: Draws connections between lands and players */
@@ -280,10 +276,10 @@ accumulate_connections 			/* Allows you to replace terrains created in previous 
 
 create_connect_all_lands
 {
-	replace_terrain		WATER SHALLOW				/* Replace WATER with SHALLOW */
-	replace_terrain 	WOODIES LAYER_A				/* Replace WOODIES with seasonal ground texture */
-	replace_terrain 	WOODIES_B LAYER_B			/* Replace WOODIES_B with seasonal accent */
-	replace_terrain 	WOODIES_C LAYER_C			/* Replace BUSH_FOREST with seasonal dirt variation */
+	replace_terrain		WATER SHALLOW			/* Replace WATER with SHALLOW */
+	replace_terrain 	WOODIES LAYER_A			/* Replace WOODIES with LAYER_A */
+	replace_terrain 	WOODIES_B LAYER_B		/* Replace WOODIES_B with LAYER_B */
+	replace_terrain 	WOODIES_C LAYER_C		/* Replace WOODIES_C with LAYER_C */
 	/* Terrain cost scale of 1-20 - lower values are more favorable - 0 = impassable */ 
 	terrain_cost 		LAYER_A 			1		
 	terrain_cost 		LAYER_B 			1		
@@ -307,24 +303,26 @@ create_connect_all_lands
 create_connect_teams_lands 
 {
 	/* Replace all terrain in path with corresponding dirt */
-	default_terrain_replacement DIRT2					
+	if PH_FROZEN
+	default_terrain_replacement DIRT_SNOW			
+	else
+	default_terrain_replacement DIRT2				
+	endif
+	replace_terrain		WATER SHALLOW			/* Replace WATER with SHALLOW */					
 	/* Terrain cost scale of 1-20 - lower values are more favorable - 0 = impassable  */ 
 	terrain_cost 		LAYER_A 			1		
 	terrain_cost 		LAYER_B 			1		
 	terrain_cost 		LAYER_C 			1		
 	terrain_cost 		LAYER_D 			1		
 	terrain_cost 		WOODIES 			7		
-	terrain_cost 		WOODIES_B 		7		
-	terrain_cost 		WATER 					0		
-	terrain_cost 		CLIFF 					0		
+	terrain_cost 		WOODIES_B 			7		
+	terrain_cost 		WATER 				0		
+	terrain_cost 		CLIFF 				0		
 }		
 
 /* OBJECTS_GENERATION: Places units, buildings, and resources on the map */
 <OBJECTS_GENERATION>
-/* 
-	GENERATING OBJECTS INCLUDES: Uses predefined object generation macros
-	These macros handle standard game objects like Town Centers, Villagers, etc.
-*/
+/* Setting up player starting objects from GeneratingObjects.inc */
 #define GNR_NORMALTC					/* Standard Town Center placement */
 #define GNR_STARTVILLS					/* Starting Villagers */
 #define GNR_CLASSICSCOUT				/* Classic Scout placement */
@@ -338,20 +336,19 @@ create_connect_teams_lands
 #define GNR_HERD22CLASSIC_B				/* Classic herd placement B */
 
 #define GNR_GIVEHUNT					/* Huntable animals */
-#define GNR_HUNT3OR4CLASSIC				/* Classic hunt placement */
+#define GNR_HUNT5MODERN					/* Modern 5 huntable placement */
 
 #define GNR_GIVERELICS					/* Relic placement */
-#define GNR_RELICMODERN_MEDIUM_SA		/* Modern relic placement for medium maps */
-#define GNR_RELPLACE_LAYERC				/* Relic placement on LAYER_C terrain */
+#define GNR_RELICMODERN_PER2PL			/* Relic Modern 2 per player placement */
 
 #define GNR_GIVELURES					/* Lure animals */
-#define GNR_CLASSICLURES				/* Classic lure placement */
+#define GNR_CLASSICLURES				/* Classic lure animal placement */
 
 #define GNR_STARTINGGOLD				/* Starting gold resources */
 #define GNR_STARTINGSTONE				/* Starting stone resources */
 
-#define GNR_STARTGOLD43M				/* Starting gold for 4v3 medium maps */
-#define GNR_STARTSTONE32M				/* Starting stone for 3v2 medium maps */
+#define GNR_STARTGOLD43M				/* Starting gold for 4 objects 3 radius */
+#define GNR_STARTSTONE32M				/* Starting stone for 3 objects 2 radius */
 
 #define GNR_RESSUPERCLOSE				/* Super close resource placement */
 
@@ -421,6 +418,7 @@ create_object STONE
 	enable_tile_shuffling					/* Increases randomness of object positions */
 }
 endif
+/* FISH Generation */
 create_object FISH_A
 {
 	number_of_objects 				(LENGTH / 4)	/* Number of FISH (LENGTH of map value divided by 4) */
@@ -431,7 +429,6 @@ create_object FISH_B
 	number_of_objects 				(LENGTH / 5)	/* Number of FISH (LENGTH of map value divided by 5) */
 	min_distance_group_placement 	3 				/* Minimum distance between group members */
 }
-/* Shore FISH - valuable water resources for exploration */
 create_object MELKARYBA
 {
 	number_of_objects 				(LENGTH / 4)	/* Number of FISH (LENGTH of map value divided by 4) */
