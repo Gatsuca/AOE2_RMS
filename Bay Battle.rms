@@ -1,0 +1,616 @@
+/* Bay Battle Made by Kayo */
+/* A Forest map with a naval bay in one corner for naval engagements. */
+/* Fight your way through the trees and control the bay to win the day! */
+
+/* Seasonal/Biome Selection - 25% for each season */
+start_random
+    percent_chance 25    #define SPRING
+    percent_chance 25    #define SUMMER
+    percent_chance 25    #define AUTUMN
+    percent_chance 25    #define WINTER
+end_random
+
+/* Terrain and Object constant declarations */
+#const UNDERBRUSH 		71 		/* UNDERBRUSH Tile */
+#const UNDERBRUSH_SNOW	72		/* UNDERBRUSH_SNOW Tile */ 
+#const BUSH_FOREST 		89		/* BUSH_FOREST Tile */
+#const OAK_BUSH_FOREST 	20		/* OAK_BUSH_FOREST Tile */
+#const CLIFF			16		/* CLIFF Tile */
+#const BUSH_WOOD		302		/* BUSH_WOOD Object */
+
+/* Seasonal Terrain Constants */
+if SPRING
+    #const PRIMARY_FOREST BIRCH_FOREST
+    #const SECONDARY_FOREST PINE_FOREST
+	#const TERTIARY_FOREST BUSH_FOREST
+	#const STRAGGLER_A BIRCH_TREE
+	#const STRAGGLER_B PINETREE
+	#const STRAGGLER_C BUSH_WOOD
+    #const COLOR_CORRECTION CC_SPRING
+    #const MIX_TERRAIN_1 GRASS2
+    #const MIX_TERRAIN_2 GRASS_FLOWERS_1
+    #const MIX_TERRAIN_3 GRASS_FLOWERS_2
+    #const MIX_TERRAIN_4 UNDERBRUSH
+	#const HERDABLE SHEEP
+elseif SUMMER
+    #const PRIMARY_FOREST FOREST
+    #const SECONDARY_FOREST PINE_FOREST
+	#const TERTIARY_FOREST BUSH_FOREST
+	#const STRAGGLER_A FOREST_TREE
+	#const STRAGGLER_B PINETREE
+	#const STRAGGLER_C BUSH_WOOD
+    #const COLOR_CORRECTION CC_SUMMER
+    #const MIX_TERRAIN_1 GRASS
+    #const MIX_TERRAIN_2 DIRT3
+    #const MIX_TERRAIN_3 UNDERBRUSH
+    #const MIX_TERRAIN_4 LEAVES
+	#const HERDABLE DLC_COW
+elseif AUTUMN
+    #const PRIMARY_FOREST DLC_FORESTAUTUMN
+    #const SECONDARY_FOREST PINE_FOREST
+	#const TERTIARY_FOREST BUSH_FOREST
+	#const STRAGGLER_A DLC_AUTUMNTREE
+	#const STRAGGLER_B PINETREE
+	#const STRAGGLER_C BUSH_WOOD
+    #const COLOR_CORRECTION CC_AUTUMN
+    #const MIX_TERRAIN_1 GRASS3
+    #const MIX_TERRAIN_2 DLC_DRYGRASS
+    #const MIX_TERRAIN_3 UNDERBRUSH
+    #const MIX_TERRAIN_4 LEAVES
+	#const HERDABLE TURKEY
+elseif WINTER
+    #const PRIMARY_FOREST DLC_FORESTSNOWAUTUMN
+    #const SECONDARY_FOREST SNOW_FOREST
+	#const TERTIARY_FOREST DLC_FORESTDEAD
+	#const STRAGGLER_A DLC_AUTUMNSNOWTREE
+	#const STRAGGLER_B SNOWPINETREE
+	#const STRAGGLER_C DLC_DEADTREE
+    #const COLOR_CORRECTION CC_WINTER
+    #const MIX_TERRAIN_1 SNOW
+    #const MIX_TERRAIN_2 SNOW_SOFT
+    #const MIX_TERRAIN_3 UNDERBRUSH_SNOW
+    #const MIX_TERRAIN_4 GRASS_SNOW
+	#const HERDABLE DLC_GOAT
+endif
+
+/* Declaration for storing map size scaling value by LENGTH */
+if MAPSIZE_LUDICROUS 		#const LENGTH 480	/* LUDICROUS 480x480 mapsize */
+elseif MAPSIZE_MONSTROUS	#const LENGTH 400	/* MONSTROUS 400x400 mapsize */
+elseif MAPSIZE_INCREDIBLE 	#const LENGTH 360	/* INCREDIBLE 360x360 mapsize */
+elseif MAPSIZE_COLOSSAL 	#const LENGTH 320	/* COLOSSAL 320x320 mapsize */
+elseif MAPSIZE_ENORMOUS 	#const LENGTH 300	/* ENORMOUS 300x300 mapsize */
+elseif MAPSIZE_MASSIVE 		#const LENGTH 276	/* MASSIVE 276x276 mapsize */
+elseif MAPSIZE_GIANT 		#const LENGTH 252	/* GIANT 252x252 mapsize */
+elseif MAPSIZE_HUGE 		#const LENGTH 240	/* HUGE 240x240 mapsize */
+elseif MAPSIZE_LARGE 		#const LENGTH 220	/* LARGE 220x220 mapsize */
+elseif MAPSIZE_NORMAL 		#const LENGTH 200	/* NORMAL 200x200 mapsize */
+elseif MAPSIZE_MEDIUM 		#const LENGTH 168	/* MEDIUM 168x168 mapsize */
+elseif MAPSIZE_SMALL 		#const LENGTH 144	/* SMALL 144x144 mapsize */
+elseif MAPSIZE_TINY 		#const LENGTH 120	/* TINY 120x120 mapsize */
+elseif MAPSIZE_MINI 		#const LENGTH 80	/* MINI 80x80 mapsize */
+endif
+
+/* PLAYER_SETUP: Configures how players are positioned and global parameters */
+<PLAYER_SETUP>
+if FIXED_POSITIONS
+grouped_by_team  						/* Players positioned together in circle with variation */
+else
+random_placement  						/* Players positioned randomly in circle with variation */
+endif
+ai_info_map_type CUSTOM 0 0 0  			/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=0, ShowType=0 */
+behavior_version 1						/* Used for versioning changes that might affect how existing maps generate */
+water_definition WD_CHOPPY				/* Water texture set for map */
+
+/* LAND_GENERATION: Creates large terrain areas including player starting areas */
+<LAND_GENERATION>
+base_terrain CLIFF						/* Sets default terrain covering entire map */
+
+create_player_lands 					/* Creates a land for every player with specified parameters */
+{
+	generate_mode 1
+	terrain_type	            CLIFF  		/* Terrain type for player starting clearings */
+	set_zone_by_team              			/* Team members share same zone - their lands can grow to touch each other */
+	land_percent    	    	    100     /* 100% land mass (reduced to make room for bay) */
+    left_border                     12
+    right_border                    12
+    top_border                      12
+    bottom_border                   12
+	circle_radius 					40 2	/* Positions players in circle: 40% radius from center, 2 variance */
+	base_size                     	20    	/* 20-tile square land origin size */
+	border_fuzziness              	50    	/* 50% border adherence (0=none, 100=sharp borders) */
+	other_zone_avoidance_distance 	0    	/* 5-tile distance between player zones */
+	set_circular_base             			/* Makes land origin circular instead of square */
+	clumping_factor 			rnd(10,40)	/* How much tiles prefer to be together next to other tiles of the same clump. */
+}	
+/* Create the naval bay in the northeast corner */
+create_land 
+{
+	terrain_type 				WATER		/* Set the Terrain type for this land to WATER */
+	land_percent 				    20		/* 25% of map area for the bay */
+	land_position 					99 0	/* Bay located in north corner (99% X, 0% Y) */
+	clumping_factor 			rnd(20,40)	/* How much tiles prefer to be together next to other tiles of the same clump. */
+	zone 							14		/* Bay zone set to 14 */
+	land_id 						14		/* Bay land id set to 14 */
+}
+create_land 
+{
+	terrain_type 				WATER		/* Set the Terrain type for this land to WATER */
+	land_percent 				    50		/* 25% of map area for the bay */
+    land_position 					75 25	/* Bay located in center (75% X, 25% Y) */
+	clumping_factor 			rnd(20,40)	/* How much tiles prefer to be together next to other tiles of the same clump. */
+	zone 							15		/* Bay zone set to 14 */
+	land_id 						15		/* Bay land id set to 14 */
+}
+create_land 
+{
+	terrain_type 				WATER		/* Set the Terrain type for this land to WATER */
+	land_percent 				    20		/* 25% of map area for the bay */
+    land_position 					50 50	/* Bay located in center (50% X, 50% Y) */
+	clumping_factor 			rnd(20,40)	/* How much tiles prefer to be together next to other tiles of the same clump. */
+	zone 							16		/* Bay zone set to 14 */
+	land_id 						16		/* Bay land id set to 14 */
+}
+
+/* ELEVATION_GENERATION: Create hills */
+<ELEVATION_GENERATION>
+create_elevation 7 								/* Sets max height allowed in create_elevation (0-16) */
+{
+	base_terrain 				CLIFF			/* Terrain type to apply elevation */
+	set_scale_by_size							/* Scales tile count by map size */
+	number_of_tiles 			2048			/* Amount of elevated tiles */
+	number_of_clumps 			(LENGTH / 2 )	/* Amount of hills LENGTH divided by 2 */
+	enable_balanced_elevation					/* To keep elevation balanced across entirety of map */
+}
+
+/* CLIFF_GENERATION: Create cliffs */
+<CLIFF_GENERATION>
+min_number_of_cliffs		(LENGTH / 10)
+max_number_of_cliffs 		(LENGTH / 8)
+min_length_of_cliff 			3				/* Minimum length of a cliff */
+max_length_of_cliff 			24				/* Maximum length of a cliff */
+cliff_curliness 				40				/* Curliness of cliffs (0-100) */
+min_distance_cliffs 			2				/* Minimum distance between cliffs */
+min_terrain_distance 			1				/* Minimum distance between cliffs and water */
+
+/* TERRAIN_GENERATION: Replace terrains with other terrains */
+<TERRAIN_GENERATION>
+color_correction COLOR_CORRECTION				/* Set color correction based on season */
+
+/* Covering CLIFF terrain with seasonal base terrain */
+create_terrain MIX_TERRAIN_1
+{
+base_terrain 		CLIFF
+land_percent 		100
+number_of_clumps 	9320
+beach_terrain  		DLC_GRAVELBEACH
+}
+
+/* Placing PRIMARY_FOREST */
+create_terrain PRIMARY_FOREST
+{
+	base_terrain 					MIX_TERRAIN_1	/* Terrain type to create new terrain from */
+	spacing_to_other_terrain_types 	0				/* Distance to other terrain types */
+	land_percent 					16				/* How much PRIMARY_FOREST is present on terrain in percent */
+	number_of_clumps 				(LENGTH * 4)	/* Number of clumps to be created */
+	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
+	clumping_factor 				rnd(8,10)		/* How much PRIMARY_FOREST prefer to be together next to other tiles of the same clump. */
+	spacing_to_specific_terrain 	WATER 	1		/* Distance to WATER */
+	spacing_to_specific_terrain 	SHALLOW 3		/* Distance to SHALLOW */
+	beach_terrain  					DLC_REEDSBEACH	/* Which beach terrain to display for this terrain */
+}
+
+/* Placing SECONDARY_FOREST */
+create_terrain SECONDARY_FOREST
+{
+	base_terrain 					MIX_TERRAIN_1	/* Terrain type to create new terrain from */
+	spacing_to_other_terrain_types 	0				/* Distance to other terrain types */
+	land_percent 					12				/* How much SECONDARY_FOREST is present on terrain in percent */
+	number_of_clumps 				(LENGTH * 4)	/* Number of clumps to be created */
+	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
+	clumping_factor 				rnd(8,10)		/* How much SECONDARY_FOREST prefer to be together next to other tiles of the same clump. */
+	spacing_to_specific_terrain 	WATER 	1		/* Distance to WATER */
+	spacing_to_specific_terrain 	SHALLOW 3		/* Distance to SHALLOW */
+	beach_terrain  					DLC_REEDSBEACH	/* Which beach terrain to display for this terrain */
+}
+
+/* Placing TERTIARY_FOREST */
+create_terrain TERTIARY_FOREST
+{
+	base_terrain 					MIX_TERRAIN_1	/* Terrain type to create new terrain from */
+	spacing_to_other_terrain_types 	0				/* Distance to other terrain types */
+	land_percent 					4				/* How much TERTIARY_FOREST is present on terrain in percent */
+	number_of_clumps 				(LENGTH * 4)	/* Number of clumps to be created */
+	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
+	clumping_factor 				rnd(1,3)		/* How much TERTIARY_FOREST prefer to be together next to other tiles of the same clump. */
+	spacing_to_specific_terrain 	SHALLOW 2		/* Distance to SHALLOW */
+	beach_terrain  					DLC_REEDSBEACH	/* Which beach terrain to display for this terrain */
+}
+
+/* Seasonal Terrain Mixing for Land Decor */
+/* Mix Terrain 2 - Secondary seasonal accent */
+create_terrain MIX_TERRAIN_2
+{
+	base_terrain 				MIX_TERRAIN_1		/* Terrain type to create new terrain from */
+	land_percent 				8					/* How much MIX_TERRAIN_2 is present on terrain in percent */
+	number_of_clumps 			2048				/* Number of clumps to be created */
+	set_scale_by_groups								/* Scales clumps by map size */
+	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
+	beach_terrain  				DLC_GRAVELBEACH		/* Which beach terrain to display for this terrain */
+}
+
+/* Mix Terrain 3 - Dirt/ground variation */
+create_terrain MIX_TERRAIN_3
+{
+	base_terrain 				MIX_TERRAIN_1		/* Terrain type to create new terrain from */
+	land_percent 				6					/* How much MIX_TERRAIN_3 is present on terrain in percent */
+	number_of_clumps 			2048				/* Number of clumps to be created */
+	set_scale_by_groups								/* Scales clumps by map size */
+	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
+	beach_terrain  				DLC_GRAVELBEACH		/* Which beach terrain to display for this terrain */
+}
+
+/* Mix Terrain 4 - Underbrush/leaves variation */
+create_terrain MIX_TERRAIN_4
+{
+	base_terrain 				MIX_TERRAIN_1		/* Terrain type to create new terrain from */
+	land_percent 				4					/* How much MIX_TERRAIN_4 is present on terrain in percent */
+	number_of_clumps 			2048				/* Number of clumps to be created */
+	set_scale_by_groups								/* Scales clumps by map size */
+	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
+	beach_terrain  				DLC_GRAVELBEACH		/* Which beach terrain to display for this terrain */
+}
+
+create_terrain MED_WATER 
+{
+	base_terrain 				WATER				/* Terrain type to create new terrain from */	
+	land_percent 				    50				/* How much MED_WATER is present in bay */
+	number_of_clumps 				256				/* Number of clumps to be created */
+	spacing_to_other_terrain_types 	2				/* Distance to other terrain types */
+}
+
+create_terrain DEEP_WATER 
+{
+	base_terrain 				MED_WATER			/* Terrain type to create new terrain from */	
+	land_percent 					50				/* How much DEEP_WATER is present on terrain in percent */
+	number_of_clumps 				128				/* Number of clumps to be created */
+	spacing_to_other_terrain_types 	2				/* Distance to other terrain types */
+}
+
+/* CONNECTION_GENERATION: Draws connections between lands and players */
+<CONNECTION_GENERATION>
+accumulate_connections 			/* Allows you to replace terrains created in previous connections with new terrains */
+
+create_connect_all_lands
+{
+	replace_terrain 	PRIMARY_FOREST MIX_TERRAIN_1	/* Replace PRIMARY_FOREST with seasonal ground texture */
+	replace_terrain 	SECONDARY_FOREST MIX_TERRAIN_2	/* Replace SECONDARY_FOREST with seasonal accent */
+	replace_terrain 	TERTIARY_FOREST MIX_TERRAIN_3		/* Replace BUSH_FOREST with seasonal dirt variation */
+	/* Terrain cost scale of 1-20 - lower values are more favorable - 0 = impassable */ 
+	terrain_cost 		MIX_TERRAIN_1 			1		
+	terrain_cost 		MIX_TERRAIN_2 			1		
+	terrain_cost 		MIX_TERRAIN_3 			1		
+	terrain_cost 		MIX_TERRAIN_4 			1		
+	terrain_cost 		PRIMARY_FOREST 			6		
+	terrain_cost 		SECONDARY_FOREST 		6		
+	terrain_cost 		WATER 					0		
+	terrain_cost		MED_WATER				0		
+	terrain_cost		DEEP_WATER				0		
+	terrain_cost 		CLIFF 					0		
+	/* Terrain size radius and variance for replaced terrain */ 
+	terrain_size 		WATER 					2 0	
+	terrain_size 		PRIMARY_FOREST 			1 1		
+	terrain_size  		SECONDARY_FOREST		1 1		
+}
+
+create_connect_teams_lands 
+{
+	/* Replace all terrain in path with corresponding dirt */
+	if WINTER
+	default_terrain_replacement DIRT_SNOW			
+	else
+	default_terrain_replacement DIRT2					
+	endif
+	/* Terrain cost scale of 1-20 - lower values are more favorable - 0 = impassable  */ 
+	terrain_cost 		MIX_TERRAIN_1 			1		
+	terrain_cost 		MIX_TERRAIN_2 			1		
+	terrain_cost 		MIX_TERRAIN_3 			1		
+	terrain_cost 		MIX_TERRAIN_4 			1		
+	terrain_cost 		PRIMARY_FOREST 			7		
+	terrain_cost 		SECONDARY_FOREST 		7		
+	terrain_cost 		WATER 					0		
+	terrain_cost 		CLIFF 					0		
+}		
+
+/* OBJECTS_GENERATION: Places units, buildings, and resources on the map */
+<OBJECTS_GENERATION>
+/* Town Center placement - placed at land origin for every player */
+create_object TOWN_CENTER
+{
+	set_place_for_every_player    			/* Places TC for each player land */
+	group_placement_radius 			1 		/* Groups placed within 3-tile radius (default+1) */
+	min_distance_to_players 		0		/* Placed at land origin */
+	max_distance_to_players 		0 		/* Placed at land origin */
+}
+
+/* GOLD and STONE placement - placed by per-player */
+create_object STONE 
+{
+	number_of_objects 					5	/* How many STONE tiles per group */
+	number_of_groups 					2	/* How many groups of STONE per player */
+	set_tight_grouping						/* Grouping type set to tight for this STONE */
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits objects to MIX_TERRAIN_1 */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places STONE for each player land */
+	min_distance_to_players 			8	/* Minimum distance of STONE generation from TC */
+	max_distance_to_players 			16	/* Maximum distance of STONE generation from TC */
+	avoid_forest_zone 					2	/* Avoid FOREST tile to prevent trapped Resource */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+create_object GOLD 
+{
+	number_of_objects 					5	/* How many GOLD tiles per group */
+	number_of_groups 					2	/* How many groups of GOLD per player */
+	set_tight_grouping						/* Grouping type set to tight for this GOLD */
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits objects to MIX_TERRAIN_1 */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places GOLD for each player land */
+	min_distance_to_players 			10	/* Minimum distance of GOLD generation from land origin */
+	max_distance_to_players 			16	/* Maximum distance of GOLD generation from land origin */
+	min_distance_group_placement 		4	/* Minimum distance between group members */
+	avoid_forest_zone 2						/* Avoid FOREST tile to prevent trapped Resource */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+/* Far Gold Generation */
+create_object GOLD 
+{
+	number_of_objects 					4	/* How many GOLD tiles per group */
+	number_of_groups 					3	/* How many groups of GOLD per player */
+	set_scaling_to_player_number			/* Scales groups to player count */
+	set_tight_grouping						/* Grouping type set to tight for this GOLD */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	min_distance_to_players 			32	/* Minimum distance of GOLD generation from TC */
+	max_distance_to_players 			64	/* Maximum distance of GOLD generation from TC */
+	min_distance_group_placement 		4	/* Minimum distance between group members */
+	temp_min_distance_group_placement 	40	/* Avoid placement of this create_object type within 40 tiles */
+	avoid_forest_zone 					2	/* Avoid FOREST tile to prevent trapped Resource */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+/* Far Stone Generation */
+create_object STONE 
+{
+	number_of_objects 					4	/* How many STONE tiles per group */
+	number_of_groups 					3	/* How many groups of STONE per player */
+	set_scaling_to_player_number			/* Scales groups to player count */
+	set_tight_grouping						/* Grouping type set to tight for this STONE */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	min_distance_to_players 			32	/* Minimum distance of STONE generation from TC */
+	max_distance_to_players 			64	/* Maximum distance of STONE generation from TC */
+	min_distance_group_placement 		4	/* Minimum distance between group members */
+	temp_min_distance_group_placement 	40	/* Avoid placement of this create_object type within 40 tiles */
+	avoid_forest_zone 					2	/* Avoid FOREST tile to prevent trapped Resource */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+/* Bay Resources - Strategic resources in the naval bay */
+create_object GOLD 
+{
+	number_of_objects 			rnd(4,6) 	/* How many GOLD tiles per group */
+	number_of_groups 					2	/* How many groups of GOLD in bay */
+	set_scaling_to_player_number			/* Scales groups to player count */
+	set_tight_grouping						/* Grouping type set to tight for this GOLD */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	min_distance_group_placement 		8	/* Minimum distance between group members */
+	temp_min_distance_group_placement 	12	/* Avoid placement of this create_object type within 12 tiles */	
+	place_on_specific_land_id			14	/* Place this GOLD in the bay area */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+create_object STONE 
+{
+	number_of_objects 			rnd(3,5) 	/* How many STONE tiles per group */
+	number_of_groups 					2	/* How many groups of STONE in bay */
+	set_scaling_to_player_number			/* Scales groups to player count */	
+	set_tight_grouping						/* Grouping type set to tight for this STONE */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	min_distance_group_placement 		8	/* Minimum distance between group members */
+	temp_min_distance_group_placement 	12	/* Avoid placement of this create_object type within 12 tiles */		
+	place_on_specific_land_id			14	/* Place this STONE in the bay area */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+/* Villager placement - automatic count based on civilization */
+create_object VILLAGER
+{
+	set_place_for_every_player    			/* Places VILLAGER for each player land */
+	min_distance_to_players 		3		/* Minimum distance of VILLAGER generation from land origin */
+	max_distance_to_players 		5		/* Maximum distance of VILLAGER generation from land origin */
+}
+
+/* Scout placement */
+create_object SCOUT
+{
+	set_place_for_every_player				/* Places SCOUT for each player land */
+	min_distance_to_players 			4	/* Minimum distance of SCOUT generation from land origin */		
+	max_distance_to_players 			6	/* Maximum distance of SCOUT generation from land origin */		
+}
+
+/* Relic Placement */
+create_object RELIC
+{
+	number_of_objects 					2	/* Number of RELIC per-player */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places RELIC for each player land */
+	min_distance_to_players 			16	/* Minimum distance of RELIC generation from land origin */
+	max_distance_to_players 			36	/* Maximum distance of RELIC generation from land origin */
+	set_circular_placement					/* Uses circular distance instead of square */
+	temp_min_distance_group_placement 	20	/* Avoid placement of this create_object type within 20 tiles */
+	avoid_forest_zone 					2	/* Avoid FOREST tile to prevent trapped RELIC */
+}
+
+/* STRAGGLER TREE Generation */
+create_object STRAGGLER_A
+{
+	number_of_objects 				20		/* STRAGGLER_A per player */
+	set_gaia_object_only        			/* Required for gaia objects placed per-player */
+	set_place_for_every_player  			/* Places trees for each player land */
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits objects to MIX_TERRAIN_1 */
+	min_distance_to_players 		4   	/* 4 tiles from land origin */
+	max_distance_to_players 		20		/* 20 tiles from land origin */
+	set_circular_placement      			/* Uses circular distance instead of square */
+	min_distance_group_placement 	0 		/* No minimum distance between group members */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+create_object STRAGGLER_B
+{
+	number_of_objects 				20		/* STRAGGLER_B per player */
+	set_gaia_object_only        			/* Required for gaia objects placed per-player */
+	set_place_for_every_player  			/* Places trees for each player land */
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits objects to MIX_TERRAIN_1 */
+	min_distance_to_players 		4   	/* 4 tiles from land origin */
+	max_distance_to_players 		20  	/* 20 tiles from land origin */
+	set_circular_placement      			/* Uses circular distance instead of square */
+	min_distance_group_placement	0 		/* No minimum distance between group members */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+create_object STRAGGLER_C
+{
+	number_of_objects 				8		/* STRAGGLER_C per player */
+	set_gaia_object_only        			/* Required for gaia objects placed per-player */
+	set_place_for_every_player  			/* Places bushes for each player land */
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits objects to MIX_TERRAIN_1 */
+	min_distance_to_players 		4   	/* 4 tiles from land origin */
+	max_distance_to_players 		16  	/* 16 tiles from land origin */
+	set_circular_placement      			/* Uses circular distance instead of square */
+	enable_tile_shuffling					/* Increases randomness of object positions */
+}
+
+/* Food Sources */
+create_object HERDABLE
+{
+	number_of_objects 				2		/* How many HERDABLE per group */				
+	number_of_groups 				3		/* How many groups of HERDABLE per player */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places HERDABLE for each player land */
+	min_distance_to_players 		6		/* Minimum distance of HERDABLE generation from land origin */
+	max_distance_to_players 		8		/* Maximum distance of HERDABLE generation from land origin */
+	set_circular_placement					/* Uses circular distance instead of square */
+	require_path 1							/* Requires a path to the HERDABLE */
+}
+
+create_object FORAGE 
+{
+    number_of_objects 				6		/* How many FORAGE tiles per group */
+	number_of_groups 				1		/* How many groups of FORAGE per player */
+    set_tight_grouping						/* Grouping type set to tight for this object */
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits objects to MIX_TERRAIN_1 */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places FORAGE for each player land */
+	min_distance_to_players 		8		/* Minimum distance of FORAGE generation from land origin */
+	max_distance_to_players 		12		/* Maximum distance of FORAGE generation from land origin */
+	avoid_forest_zone 				2		/* Avoid FOREST tile to prevent trapped Resource */
+	require_path 1							/* Requires a path to the FORAGE */
+}
+
+/* Naval Fish Resources in the Bay */
+create_object FISH_PERCH
+{
+	number_of_objects 				(LENGTH / 3)	/* Number of FISH in bay (LENGTH of map value divided by 3) */
+	min_distance_group_placement 	4 				/* Minimum distance between group members */
+	place_on_specific_land_id		14				/* Place only in the bay area */
+}
+
+create_object FISH_TUNA
+{
+	number_of_objects 				(LENGTH / 4)	/* Number of FISH in bay (LENGTH of map value divided by 4) */
+	min_distance_group_placement 	4 				/* Minimum distance between group members */
+	place_on_specific_land_id		14				/* Place only in the bay area */
+}
+
+create_object SHORE_FISH
+{
+	number_of_objects 				(LENGTH / 5)	/* Number of SHORE_FISH in bay */
+	temp_min_distance_group_placement 	4			/* Avoid placement of this create_object type within 4 tiles */
+	place_on_specific_land_id		14				/* Place only in the bay area */
+}
+
+/* Regular water fish */
+create_object FISH_PERCH
+{
+	number_of_objects 				(LENGTH / 6)	/* Number of FISH in regular water */
+	min_distance_group_placement 	3 				/* Minimum distance between group members */
+}
+
+create_object FISH_TUNA
+{
+	number_of_objects 				(LENGTH / 8)	/* Number of FISH in regular water */
+	min_distance_group_placement 	3 				/* Minimum distance between group members */
+}
+
+create_object DEER 
+{
+	number_of_objects 				6		/* How many DEER per group */
+	number_of_groups 				2		/* How many groups of DEER per player */
+	group_placement_radius 			5		/* Number of tiles from the central tile that objects belonging to the same group may spawn */
+	set_loose_grouping						/* Grouping type set to loose for this object */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places DEER for each player land */
+	min_distance_to_players 		12		/* Minimum distance of DEER generation from land origin */
+	max_distance_to_players 		24		/* Maximum distance of DEER generation from land origin */
+	min_distance_group_placement 	8 		/* Minimum distance between group members */
+	require_path 1							/* Requires a path to the DEER */
+}
+
+create_object BOAR
+{
+	number_of_objects 				1		/* How many BOAR per group */
+	number_of_groups 				3		/* How many groups of BOAR per player */
+	set_gaia_object_only					/* Required for gaia objects placed per-player */
+	set_place_for_every_player				/* Places BOAR for each player land */
+	min_distance_to_players 		12		/* Minimum distance of BOAR generation from land origin */
+	max_distance_to_players 		24		/* Maximum distance of BOAR generation from land origin */
+	min_distance_group_placement 	5 		/* Minimum distance between group members */
+	require_path 1							/* Requires a path to the BOAR */
+}
+
+/* Predator Animal Creation */
+create_object WOLF
+{
+	number_of_objects 					1			/* Number of WOLF per group */
+	number_of_groups 				(LENGTH / 16) 	/* Number of groups of WOLF (LENGTH of map divided by 16) */	
+	min_distance_to_players 			24			/* Minimum distance WOLF to be spawned in relation to players */
+	min_distance_group_placement 		8 			/* Minimum distance between group members */
+	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */
+}
+
+create_object DLC_BEAR
+{
+	number_of_objects 					1			/* Number of BEAR per group */
+	number_of_groups 				(LENGTH / 16) 	/* Number of groups of BEAR (LENGTH of map divided by 16) */		
+	min_distance_to_players 			28			/* Minimum distance BEAR to be spawned in relation to players */
+	min_distance_group_placement 		8 			/* Minimum distance between group members */	
+	temp_min_distance_group_placement 	12			/* Avoid placement of this create_object type within 12 tiles */
+}
+
+/* Regicide game mode - spawns KING and CASTLE when Regicide is active */
+if REGICIDE
+create_object KING
+{	
+	set_place_for_every_player  			/* Places King for each player land */
+	min_distance_to_players 		4		/* How close the KING can be placed to TC */
+	find_closest                 			/* Placed at closest valid location to land origin */
+}
+
+create_object CASTLE
+{
+	terrain_to_place_on 	MIX_TERRAIN_1	/* Limits object to MIX_TERRAIN_1 */
+	set_place_for_every_player				/* Places Castle for each player land */
+	min_distance_to_players 		8		/* How close the CASTLE can be placed to TC */
+	max_distance_to_players			16		/* How far the CASTLE can be placed from TC */
+	find_closest							/* Placed at closest valid location to land origin */		
+}
+endif
