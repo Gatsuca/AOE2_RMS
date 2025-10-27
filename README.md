@@ -8,7 +8,6 @@ A collection of custom random map scripts (RMS) for Age of Empires 2, created by
 - [Maps](#maps)
 - [Features](#features)
 - [Installation](#installation)
-- [Map Details](#map-details)
 - [Technical Specifications](#technical-specifications)
 - [Compatibility](#compatibility)
 - [Contributing](#contributing)
@@ -53,18 +52,27 @@ This project contains three professionally crafted random map scripts that bring
 - Special buildings (Trading Workshop, Castle Ruins)
 - Strategic military building placement
 
+### 4. Nomad Ruins
+**Theme:** Central city ruins to fight over. Now in Nomad! 
+**Focus:** Urban warfare and resource control  
+**Key Features:**
+- Central ruined city with walls and buildings
+- Multiple biome variations (Alpine, Desert, African, etc.)
+- Special buildings (Castle Ruins)
+- Strategic military building placement
+
 ## ✨ Features
 
 ### Seasonal/Biome System
 Each map includes dynamic seasonal selection:
 
-**Bay Battle & Forest River:**
+**Bay Battle:**
 - Spring (25% chance) - Birch forests, flowers, sheep
 - Summer (25% chance) - Mixed forests, cows
 - Autumn (25% chance) - Autumn forests, turkeys
 - Winter (25% chance) - Snow forests, goats
 
-**Ruin Rumble:**
+**Ruin Rumble, Forest River, Nomad Ruins:**
 - 15+ biome variations including Alpine, Desert, African, Asian, Tropical, and Frozen
 - Each biome affects terrain appearance, color correction, and civilization themes
 
@@ -89,39 +97,10 @@ Each map includes dynamic seasonal selection:
 3. **Restart** Age of Empires 2
 4. **Select** the maps from the Random Map dropdown in multiplayer or singleplayer
 
-## 📊 Map Details
-
-### Bay Battle
-```
-Map Type: Forest with Naval Bay
-Player Count: 2-8 players
-Resource Focus: Naval economy, bay control
-Special Features: Multiple water depths, bay resources
-Recommended Game Modes: Standard, Regicide
-```
-
-### Forest River
-```
-Map Type: Forest with Rivers
-Player Count: 2-8 players
-Resource Focus: River crossing, territorial expansion
-Special Features: Seasonal water effects, center island
-Recommended Game Modes: Standard, King of the Hill, Regicide
-```
-
-### Ruin Rumble
-```
-Map Type: Urban Ruins
-Player Count: 2-8 players
-Resource Focus: City control, building capture
-Special Features: Central city, multiple biomes, special buildings
-Recommended Game Modes: Standard, Regicide
-```
-
 ## ⚙️ Technical Specifications
 
 ### Map Scaling
-All maps dynamically adjust based on map size:
+Some maps dynamically adjust based on map size, for example:
 
 | Map Size | Dimensions | Player Land % | Circle Radius |
 |----------|------------|---------------|---------------|
@@ -131,13 +110,7 @@ All maps dynamically adjust based on map size:
 | Normal   | 200x200    | 92-96%        | 36%           |
 | Large    | 220x220    | 91-95%        | 38%           |
 | Huge     | 240x240    | 90-94%        | 40%           |
-| Giant+   | 252x480    | 90-94%        | 40%+          |
-
-### AI Compatibility
-- **Map Type:** Custom (Bay Battle, Forest River) / Arena (Ruin Rumble)
-- **AI Behavior Version:** 1
-- **Nomad Mode:** Disabled
-- **Michi Mode:** Disabled
+| Giant+   | 252x252    | 90-94%        | 40%+          |
 
 ### Performance Optimization
 - Efficient terrain generation algorithms
