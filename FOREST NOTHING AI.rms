@@ -1,0 +1,70 @@
+/* Based off FOREST NOTHING DE by MerlinMadHat */
+/* FOREST NOTHING AI COMPATIBLE Made by Kayo */
+
+/* PLAYER_SETUP: Configures how players are positioned and global parameters */
+<PLAYER_SETUP>
+random_placement  						/* Players positioned in circle with variation (default behavior) */
+ai_info_map_type CUSTOM 0 1 0  			/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=1, ShowType=0 */
+behavior_version 1						/* Used for versioning changes that might affect how existing maps generate */
+
+/* LAND_GENERATION: Creates large terrain areas including player starting areas */
+<LAND_GENERATION>
+base_terrain FOREST						/* Sets default terrain covering entire map */
+
+create_player_lands 					/* Creates a land for every player with specified parameters */
+{
+  terrain_type	                GRASS  	/* Terrain type for player starting clearings */
+  land_percent                  0    	/* 0% land mass - creates small clearings only, not large land masses */
+  left_border                   10     	/* Edge area where land origins cannot spawn - prevents TC near map edge */
+  right_border                  10    	/* Critical feature that keeps TC from being within 10% of edge of map */
+  top_border                    10     	/* Prevents save game issues when players spawn too close to map edges */
+  bottom_border                 10     	/* Similar to stuck villager issue in nomad maps but more common */
+  circle_radius 				 40 5  	/* Positions players in circle: 40% radius from center, 5 variance */
+  border_fuzziness              100    	/* 100% border adherence (0=none, 100=sharp borders) - critical to keep TC from touching edge */
+  set_zone_by_team              		/* Team members share same zone - their lands can grow to touch each other */
+  base_size                     10    	/* 10-tile square land origin size */
+  other_zone_avoidance_distance 12    	/* Minimum 12-tile gap between different zones */
+  set_circular_base             		/* Makes land origin circular instead of square */
+}
+
+/* OBJECTS_GENERATION: Places units, buildings, and resources on the map */
+<OBJECTS_GENERATION>
+
+/* Town Center placement - placed at land origin for every player */
+create_object TOWN_CENTER
+{
+  set_place_for_every_player    		/* Places TC for each player land */
+  group_placement_radius 		1 		/* Groups placed within 3-tile radius (default+1) */
+  min_distance_to_players 		0		/* Placed at land origin */
+  max_distance_to_players 		0 		/* Placed at land origin */
+}
+
+/* Villager placement - automatic count based on civilization */
+create_object VILLAGER
+{
+  /* If you don't set number_of_objects, the game will automatically place 3 villagers (or 6 for Chinese, 4 for Mayas) */
+	set_place_for_every_player    		/* Places villagers for each player land */
+	find_closest                 		/* Placed at closest valid location to land origin */
+}
+
+/* Straggler trees - decorative forest trees around each player's base */
+create_object FOREST_TREE
+{
+
+	number_of_objects 			50      /* 50 forest trees per player */
+	set_gaia_object_only        		/* Required for gaia objects placed per-player */
+	set_place_for_every_player  		/* Places trees for each player land */
+	min_distance_to_players 	5   	/* 5 tiles from land origin */
+	max_distance_to_players 	10	  	/* 10 tiles from land origin */
+	set_circular_placement      		/* Uses circular distance instead of square */
+	min_distance_group_placement 0 		/* No minimum distance between group members */
+}
+
+/* Regicide game mode - spawns King unit when Regicide is active */
+if REGICIDE
+create_object KING
+{	
+	set_place_for_every_player  		/* Places King for each player land */
+	find_closest                 		/* Placed at closest valid location to land origin */
+}
+endif
