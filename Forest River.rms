@@ -315,7 +315,8 @@ create_connect_teams_lands
 	terrain_cost 		LAYER_C 			1		
 	terrain_cost 		LAYER_D 			1		
 	terrain_cost 		WOODIES 			7		
-	terrain_cost 		WOODIES_B 			7		
+	terrain_cost 		WOODIES_B 			7
+	terrain_cost 		WOODIES_C 			7			
 	terrain_cost 		WATER 				0		
 	terrain_cost 		CLIFF 				0		
 }		
