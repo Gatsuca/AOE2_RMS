@@ -1,0 +1,322 @@
+/* *****************************************************************************
+ * Overwhelming Siege - Made by Kayo
+ * *****************************************************************************
+ * A 2v3v3 (or 2v6) Map with Players 1 and 2 surrounded.
+ * Defend your lakeside lands from sieging invaders
+ * ***************************************************************************** */
+
+/* Biome Selection from F_seasons.inc */
+if ANTIQUITY_MODE
+	start_random
+		percent_chance 10 	#define PH_ALPINE
+		percent_chance 10 	#define PH_SPRING
+		percent_chance 10 	#define PH_SPRING_C
+		percent_chance 24 	#define PH_MEDISOUTH
+		percent_chance 12 	#define PH_DESERT
+		percent_chance 8 	#define PH_AFRICAN		
+		percent_chance 8 	#define PH_AFRICAN_E
+		percent_chance 12 	#define PH_AUTUMN
+		percent_chance 6 	#define PH_FROZEN
+	end_random
+else 
+	start_random
+		percent_chance 8 	#define PH_ALPINE
+		percent_chance 5 	#define PH_SPRING
+		percent_chance 5 	#define PH_SPRING_B
+		percent_chance 5 	#define PH_SPRING_C
+		percent_chance 11 	#define PH_MEDISOUTH
+		percent_chance 4 	#define PH_TROPHICALSOUTH
+		percent_chance 4 	#define PH_TROPHICALSOUTH_B
+		percent_chance 8 	#define PH_TROPHICALEAST
+		percent_chance 8 	#define PH_DESERT
+		percent_chance 8 	#define PH_AFRICAN		
+		percent_chance 8 	#define PH_AFRICAN_E
+		percent_chance 6 	#define PH_ASIAN
+		percent_chance 6 	#define PH_ASIAN_B
+		percent_chance 5 	#define PH_AUTUMN
+		percent_chance 5 	#define PH_AUTUMN_B
+		percent_chance 4 	#define PH_FROZEN
+	end_random
+endif
+#include_drs F_seasons.inc
+
+/* Declaration for storing map size scaling value by LENGTH */
+if MAPSIZE_LUDICROUS 		#const LENGTH 480	/* LUDICROUS 480x480 mapsize */
+elseif MAPSIZE_MONSTROUS	#const LENGTH 400	/* MONSTROUS 400x400 mapsize */
+elseif MAPSIZE_INCREDIBLE 	#const LENGTH 360	/* INCREDIBLE 360x360 mapsize */
+elseif MAPSIZE_COLOSSAL 	#const LENGTH 320	/* COLOSSAL 320x320 mapsize */
+elseif MAPSIZE_ENORMOUS 	#const LENGTH 300	/* ENORMOUS 300x300 mapsize */
+elseif MAPSIZE_MASSIVE 		#const LENGTH 276	/* MASSIVE 276x276 mapsize */
+elseif MAPSIZE_GIANT 		#const LENGTH 252	/* GIANT 252x252 mapsize */
+elseif MAPSIZE_HUGE 		#const LENGTH 240	/* HUGE 240x240 mapsize */
+elseif MAPSIZE_LARGE 		#const LENGTH 220	/* LARGE 220x220 mapsize */
+elseif MAPSIZE_NORMAL 		#const LENGTH 200	/* NORMAL 200x200 mapsize */
+elseif MAPSIZE_MEDIUM 		#const LENGTH 168	/* MEDIUM 168x168 mapsize */
+elseif MAPSIZE_SMALL 		#const LENGTH 144	/* SMALL 144x144 mapsize */
+elseif MAPSIZE_TINY 		#const LENGTH 120	/* TINY 120x120 mapsize */
+elseif MAPSIZE_MINI 		#const LENGTH 80	/* MINI 80x80 mapsize */
+endif
+
+/* PLAYER_SETUP: Configures how players are positioned and global parameters */
+<PLAYER_SETUP>
+direct_placement
+ai_info_map_type CUSTOM 0 0 0			/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=0, ShowType=0 */
+behavior_version 1						/* Used for versioning changes that might affect how existing maps generate */
+<LAND_GENERATION>
+base_terrain LAYER_A					/* Sets default terrain covering entire map */
+create_land 
+{
+terrain_type WATER
+land_percent 8
+left_border 0
+right_border 64
+top_border 36
+bottom_border 36
+border_fuzziness 10
+}
+create_land 
+{
+terrain_type WATER
+land_percent 8
+left_border 70
+right_border 0
+top_border 30
+bottom_border 30
+border_fuzziness 10
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 60
+right_border 40
+top_border 40
+bottom_border 50
+border_fuzziness 50
+base_size 7
+assign_to_player 1
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100	
+left_border 60
+right_border 40
+top_border 50
+bottom_border 40
+border_fuzziness 50
+base_size 7
+assign_to_player 2
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 80
+right_border 8
+top_border 8
+bottom_border 80
+border_fuzziness 50
+base_size 7
+assign_to_player 3
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 40
+right_border 50
+top_border 8
+bottom_border 76
+border_fuzziness 50
+base_size 7
+assign_to_player 4
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 8
+right_border 76
+top_border 8
+bottom_border 76
+border_fuzziness 50
+base_size 7
+assign_to_player 5
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 80
+right_border 8
+top_border 80
+bottom_border 8
+border_fuzziness 50
+base_size 7
+assign_to_player 6
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 40
+right_border 50
+top_border 76
+bottom_border 8
+border_fuzziness 50
+base_size 7
+assign_to_player 7
+}
+create_land 
+{
+terrain_type LAYER_A
+land_percent 100
+left_border 8
+right_border 76
+top_border 76
+bottom_border 8
+border_fuzziness 50
+base_size 7
+assign_to_player 8
+}
+
+/* ELEVATION_GENERATION: Create hills */
+<ELEVATION_GENERATION>
+create_elevation 6 								/* Sets max height allowed in create_elevation (0-16) */
+{
+	base_terrain 				LAYER_A			/* Terrain type to apply elevation */
+	set_scale_by_size							/* Scales tile count by map size */
+	number_of_tiles 			1028			/* Amount of elevated tiles */
+	number_of_clumps 			(LENGTH / 4)	/* Amount of hills LENGTH divided by 2 */
+	enable_balanced_elevation					/* To keep elevation balanced across entirety of map */
+}
+/* TERRAIN_GENERATION: Replace terrains with other terrains */
+<TERRAIN_GENERATION>
+/* Color correction selection - Based upon Biome selected prior */
+if PH_ALPINE				color_correction	CC_WINTER
+elseif PH_ALPINE_B			color_correction	CC_WINTER
+elseif PH_SPRING			color_correction	CC_SPRING
+elseif PH_SPRING_B			color_correction	CC_SPRING
+elseif PH_SPRING_C			color_correction	CC_SPRING
+elseif PH_MEDISOUTH			color_correction	CC_SUMMER
+elseif PH_TROPHICALSOUTH	color_correction	CC_RAINFOREST
+elseif PH_TROPHICALSOUTH_B	color_correction	CC_RAINFOREST
+elseif PH_TROPHICALEAST		color_correction	CC_JUNGLE
+elseif PH_ASIAN 			color_correction	CC_SUMMER
+elseif PH_ASIAN_B			color_correction	CC_STEPPES
+elseif PH_AUTUMN			color_correction	CC_AUTUMN
+elseif PH_AUTUMN_B			color_correction	CC_AUTUMN
+elseif PH_FROZEN			color_correction	CC_ARCTIC
+else
+endif
+/* Placing WOODIES */
+create_terrain WOODIES
+{
+	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
+	spacing_to_other_terrain_types 	0				/* Distance to other terrain types */
+	land_percent 					20				/* How much WOODIES is present on terrain in percent */
+	number_of_clumps 				64				/* Number of clumps to be created */
+	set_scale_by_groups
+	set_avoid_player_start_areas	20				/* Sets terrain generation to avoid player base area */
+	clumping_factor 				30				/* How much WOODIES prefer to be together next to other tiles of the same clump. */
+}
+/* Placing WOODIES_B */
+create_terrain WOODIES_B
+{
+	base_terrain 					WOODIES			/* Terrain type to create new terrain from */
+	spacing_to_other_terrain_types 	0				/* Distance to other terrain types */
+	land_percent 					6				/* How much WOODIES_B is present on terrain in percent */
+	number_of_clumps 				32				/* Number of clumps to be created */
+	set_scale_by_groups
+	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
+	clumping_factor 				12				/* How much WOODIES_B prefer to be together next to other tiles of the same clump. */
+}
+/* Placing WOODIES_C */
+create_terrain WOODIES_C
+{
+	base_terrain 					WOODIES			/* Terrain type to create new terrain from */
+	spacing_to_other_terrain_types 	0				/* Distance to other terrain types */
+	land_percent 					4				/* How much WOODIES_C is present on terrain in percent */
+	number_of_clumps 				32				/* Number of clumps to be created */
+	set_scale_by_groups
+	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
+	clumping_factor 				8				/* How much WOODIES_C prefer to be together next to other tiles of the same clump. */
+}
+/* Seasonal terrain mixing for land Decor */
+create_terrain LAYER_B
+{
+	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
+	land_percent 				16					/* How much LAYER_B is present on terrain in percent */
+	number_of_clumps 			2048				/* Number of clumps to be created */
+	set_scale_by_groups								/* Scales clumps by map size */
+	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
+}
+create_terrain LAYER_C
+{
+	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
+	land_percent 				12					/* How much LAYER_C is present on terrain in percent */
+	number_of_clumps 			2048				/* Number of clumps to be created */
+	set_scale_by_groups								/* Scales clumps by map size */
+	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
+}
+create_terrain LAYER_D
+{
+	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
+	land_percent 				8					/* How much LAYER_D is present on terrain in percent */
+	number_of_clumps 			2048				/* Number of clumps to be created */
+	set_scale_by_groups								/* Scales clumps by map size */
+	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
+}
+/* Water depth creation */
+create_terrain MED_WATER 
+{
+	base_terrain 				WATER			/* Terrain type to create new terrain from */	
+	land_percent 					20			/* How much MED_WATER is present on terrain in percent */
+	number_of_clumps 				128			/* Number of clumps to be created */
+	spacing_to_other_terrain_types 	2			/* Distance to other terrain types */
+}
+create_terrain DEEP_WATER 
+{
+	base_terrain 				MED_WATER		/* Terrain type to create new terrain from */	
+	land_percent 					8			/* How much DEEP_WATER is present on terrain in percent */
+	number_of_clumps 				128			/* Number of clumps to be created */
+	spacing_to_other_terrain_types 	2			/* Distance to other terrain types */
+}
+/* OBJECTS_GENERATION: Places units, buildings, and resources on the map */		
+<OBJECTS_GENERATION>
+#define GNR_NORMALTC					/* Standard Town Center placement */
+#define GNR_STARTVILLS					/* Starting Villagers */
+#define GNR_CLASSICSCOUT				/* Classic Scout placement */
+
+#define GNR_REGICIDECLASSIC				/* Regicide game mode support */
+
+#define GNR_GIVEHERD_A					/* Herdable animals type A */
+#define GNR_GIVEHERD_B					/* Herdable animals type B */
+
+#define GNR_HERD4CLASSIC_A				/* Classic herd placement A */
+#define GNR_HERD22CLASSIC_B				/* Classic herd placement B */
+
+#define GNR_GIVEHUNT					/* Huntable animals */
+#define GNR_HUNT5MODERN					/* Modern 5 huntable placement */
+
+#define GNR_GIVERELICS					/* Relic placement */
+#define GNR_RELICMODERN_PER2PL			/* Relic Modern 2 per player placement */
+
+#define GNR_GIVELURES					/* Lure animals */
+#define GNR_CLASSICLURES				/* Classic lure animal placement */
+
+#define GNR_STARTINGGOLD				/* Starting gold resources */
+#define GNR_STARTINGSTONE				/* Starting stone resources */
+
+#define GNR_STARTGOLD43M				/* Starting gold for 4 objects 3 radius */
+#define GNR_STARTSTONE32M				/* Starting stone for 3 objects 2 radius */
+
+#define GNR_RESSUPERCLOSE				/* Super close resource placement */
+
+#define GNR_6KER						/* 6 King of the Hill relics */
+#define GNR_HOMESTRAGGLE				/* Home straggler trees */
+
+#define GNR_NORMALBIRDS					/* Normal bird placement */
+
+#include_drs GeneratingObjects.inc		/* Includes the actual object generation code */
