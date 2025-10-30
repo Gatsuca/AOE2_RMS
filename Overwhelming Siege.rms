@@ -3,6 +3,8 @@
  * *****************************************************************************
  * A 2v3v3 (or 2v6) Map with Players 1 and 2 surrounded.
  * Defend your lakeside lands from sieging invaders
+ * ***************************************************************************** 
+ * git: https://github.com/Gatsuca/AOE2_RMS
  * ***************************************************************************** */
 
 /* Biome Selection from F_seasons.inc */
