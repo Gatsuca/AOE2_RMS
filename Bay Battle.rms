@@ -41,6 +41,20 @@ endif
 
 #include_drs F_seasons.inc
 
+/* Medium and deep water tile selection */
+if PH_ASIAN					
+#const MED_VODA 116
+#const DEEP_VODA 116
+elseif PH_TROPHICALSOUTH	
+#const MED_VODA 1
+#const DEEP_VODA 23
+elseif PH_TROPHICALEAST		
+#const MED_VODA 1
+#const DEEP_VODA 23
+else						
+#const MED_VODA 23
+#const DEEP_VODA 22
+endif
 /* Declaration for storing map size scaling value by LENGTH */
 if MAPSIZE_LUDICROUS 		#const LENGTH 480	/* LUDICROUS 480x480 mapsize */
 elseif MAPSIZE_MONSTROUS	#const LENGTH 400	/* MONSTROUS 400x400 mapsize */
@@ -618,18 +632,18 @@ create_terrain LAYER_E
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
 }
-create_terrain MED_WATER
+create_terrain MED_VODA
 {
 	base_terrain 					VODA			/* Terrain type to create new terrain from */
-	land_percent 					32				/* How much MED_WATER is present on terrain in percent */
+	land_percent 					32				/* How much MED_VODA is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */	
 	spacing_to_other_terrain_types 	2				/* Spacing to other terrains in tiles */
 }
-create_terrain DEEP_WATER
+create_terrain DEEP_VODA
 {
-	base_terrain 					MED_WATER		/* Terrain type to create new terrain from */
-	land_percent 					16				/* How much DEEP_WATER is present on terrain in percent */
+	base_terrain 					MED_VODA		/* Terrain type to create new terrain from */
+	land_percent 					16				/* How much DEEP_VODA is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	spacing_to_other_terrain_types 	4				/* Spacing to other terrains in tiles */
@@ -651,9 +665,9 @@ create_connect_all_players_land
 	terrain_cost 	WOODIES 		10		
 	terrain_cost 	WOODIES_B 		10
 	terrain_cost 	WOODIES_C 		10
-	terrain_cost 	WATER	 		0
-	terrain_cost 	MED_WATER	 	0
-	terrain_cost 	DEEP_WATER	 	0	
+	terrain_cost 	VODA	 		0
+	terrain_cost 	MED_VODA	 	0
+	terrain_cost 	DEEP_VODA	 	0	
 }
 
 /* OBJECTS_GENERATION: Places units, buildings, and resources on the map */
@@ -895,15 +909,15 @@ create_object PREDATOR_B
 	temp_min_distance_group_placement 	12		/* Avoid placement of this create_object type within 12 tiles */
 }
 /* Birds */
-create_object BIRD_A
+create_object BIRDS_A
 {
-	number_of_objects rnd(4,8)
-	set_scaling_to_map_size
+	number_of_objects 				rnd(4,8)		/* Number of BIRD_A per group */
+	set_scaling_to_map_size							/* Scales object amount to map size */
 }
-create_object BIRD_B
+create_object BIRDS_B
 {
-	number_of_objects rnd(2,4)
-	set_scaling_to_map_size
+	number_of_objects 				rnd(2,4)		/* Number of BIRD_B per group */
+	set_scaling_to_map_size							/* Scales object amount to map size */
 }
 /* Regicide game mode - spawns KING and CASTLE when Regicide is active */
 if REGICIDE
