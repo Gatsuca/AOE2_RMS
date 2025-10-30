@@ -597,7 +597,7 @@ create_terrain WOODIES_C
 create_terrain LAYER_B
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					16				/* How much LAYER_B is present on terrain in percent */
+	land_percent 					12				/* How much LAYER_B is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
@@ -605,7 +605,7 @@ create_terrain LAYER_B
 create_terrain LAYER_C
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					12				/* How much LAYER_C is present on terrain in percent */
+	land_percent 					8				/* How much LAYER_C is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
@@ -613,7 +613,7 @@ create_terrain LAYER_C
 create_terrain LAYER_E
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					8				/* How much LAYER_E is present on terrain in percent */
+	land_percent 					6				/* How much LAYER_E is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
