@@ -3,6 +3,8 @@
  * *****************************************************************************
  * A Forest split by rivers between each team. 
  * Fight your way through the trees and over the rivers to win the day!
+ * ***************************************************************************** 
+ * git: https://github.com/Gatsuca/AOE2_RMS
  * ***************************************************************************** */
 
 /* Biome Selection from F_seasons.inc */

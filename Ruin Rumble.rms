@@ -3,6 +3,8 @@
  * *****************************************************************************
  * A closed map with a center ruin to fight over.
  * Strike your Enemies and plunder the ruins to take what remains!
+ * ***************************************************************************** 
+ * git: https://github.com/Gatsuca/AOE2_RMS
  * ***************************************************************************** */
 
 /* Biome Selection from F_seasons.inc */
