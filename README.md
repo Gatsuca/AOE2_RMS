@@ -12,7 +12,9 @@ A collection of custom random map scripts (RMS) for Age of Empires 2, created by
 - [Compatibility](#compatibility)
 - [Contributing](#contributing)
 
-## 🎮 Overview {#overview}
+## 🎮 Overview
+
+<a id="overview"></a>
 
 This project contains three professionally crafted random map scripts that bring fresh strategic challenges to Age of Empires 2. Each map features:
 
@@ -22,7 +24,9 @@ This project contains three professionally crafted random map scripts that bring
 - **AI Compatibility** - Optimized for AI players with proper map type information
 - **Scalable Design** - Adapts to all map sizes from Mini (80x80) to Ludicrous (480x480)
 
-## 🗺️ Maps {#maps}
+## 🗺️ Maps
+
+<a id="maps"></a>
 
 ### 1. Bay Battle
 
@@ -68,7 +72,9 @@ This project contains three professionally crafted random map scripts that bring
 - Special buildings (Castle Ruins)
 - Strategic military building placement
 
-## ✨ Features {#features}
+## ✨ Features
+
+<a id="features"></a>
 
 ### Seasonal/Biome System
 
@@ -100,7 +106,9 @@ Each map includes dynamic seasonal selection:
 - **King of the Hill** - Center control objectives
 - **Team Games** - Optimized team positioning
 
-## 🚀 Installation {#installation}
+## 🚀 Installation
+
+<a id="installation"></a>
 
 1. **Download** the `.rms` files from this repository
 2. **Place** the files in your Age of Empires 2 Random Maps folder:
@@ -109,7 +117,9 @@ Each map includes dynamic seasonal selection:
 3. **Restart** Age of Empires 2
 4. **Select** the maps from the Random Map dropdown in multiplayer or singleplayer
 
-## ⚙️ Technical Specifications {#technical-specifications}
+## ⚙️ Technical Specifications
+
+<a id="technical-specifications"></a>
 
 ### Map Scaling
 
@@ -132,14 +142,18 @@ Some maps dynamically adjust based on map size, for example:
 - Balanced clumping factors for natural appearance
 - Smart resource distribution to prevent clustering
 
-## 🎯 Compatibility {#compatibility}
+## 🎯 Compatibility
+
+<a id="compatibility"></a>
 
 - **Age of Empires 2: Definitive Edition** (Primary)
 - **All Expansions:** Compatible with all DLC civilizations
 - **Mod Support:** Works with most gameplay mods
 - **Multiplayer:** Fully compatible with online play
 
-## 🤝 Contributing {#contributing}
+## 🤝 Contributing
+
+<a id="contributing"></a>
 
 Contributions are welcome! If you'd like to improve these maps or add new features:
 
