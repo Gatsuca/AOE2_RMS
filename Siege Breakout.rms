@@ -83,91 +83,95 @@ base_terrain VODA						/* Sets default terrain covering entire map */
 create_land 
 {
 	terrain_type LAYER_A
-	land_percent 					50
-	land_position 					52 50
-	left_border 40
-	right_border 36
-	if LENGTH > 168
-	top_border 38
-	bottom_border 38
-	elseif LENGTH 168
-	top_border 36
-	bottom_border 36	
-	elseif LENGTH < 168
-	top_border 32
-	bottom_border 32
+	land_percent 				50
+	land_position 				52 50
+	if LENGTH > 200
+		left_border 			34
+		right_border 			34	
+		top_border 				38
+		bottom_border 			38
+	elseif LENGTH 200
+		left_border 			32
+		right_border 			32	
+		top_border 				36
+		bottom_border 			36	
+	elseif LENGTH < 200
+		left_border 			30
+		right_border 			30
+		top_border 				32
+		bottom_border 			32
 	endif
-	border_fuzziness 50
-	land_id 						11		/* Land ID for this create_land */
-	zone 							11		/* Zone for this create_land */
+	border_fuzziness 			60
+	land_id 					11		/* Land ID for this create_land */
+	zone 						11		/* Zone for this create_land */
 }
 create_land 
 {
 	terrain_type LAYER_A
-	land_percent 					50
-	land_position 					50 99
-	left_border 0
-	right_border 0
-	if LENGTH > 168
-	top_border 64
-	bottom_border 0
-	elseif LENGTH 168
-	top_border 66
-	bottom_border 0	
-	elseif LENGTH < 168
-	top_border 68
-	bottom_border 0
+	land_percent 				50
+	land_position 				50 99
+	left_border 				0
+	right_border 				0
+	if LENGTH > 200
+		top_border 				64
+		bottom_border 			0
+	elseif LENGTH 200
+		top_border 				66
+		bottom_border 			0	
+	elseif LENGTH < 200
+		top_border 				68
+		bottom_border 			0
 	endif
-	border_fuzziness 50
-	land_id 						12		/* Land ID for this create_land */
-	zone 							12		/* Zone for this create_land */
+	border_fuzziness 			60
+	land_id 					12		/* Land ID for this create_land */
+	zone 						12		/* Zone for this create_land */
 }
 create_land 
 {
 	terrain_type LAYER_A
-	land_percent 					50
-	land_position 					50 0
-	left_border 0
-	right_border 0
-	if LENGTH > 168
-	top_border 0
-	bottom_border 64
-	elseif LENGTH 168
-	top_border 0
-	bottom_border 66	
-	elseif LENGTH < 168
-	top_border 0
-	bottom_border 68
+	land_percent 				50
+	land_position 				50 0
+	left_border 				0
+	right_border 				0
+	if LENGTH > 200
+		top_border 				0
+		bottom_border 			64
+	elseif LENGTH 200
+		top_border 				0
+		bottom_border 			66	
+	elseif LENGTH < 200
+		top_border 				0
+		bottom_border 			68
 	endif
-	border_fuzziness 50
-	land_id 						13		/* Land ID for this create_land */
-	zone 							13		/* Zone for this create_land */	
+	border_fuzziness 			60
+	land_id 					13		/* Land ID for this create_land */
+	zone 						13		/* Zone for this create_land */	
 }
 create_land 
 {
 	terrain_type VODA
-	land_percent 8
-	land_position 					20 50
-	left_border -16
-	right_border 64
-	top_border 36
-	bottom_border 36
-	border_fuzziness 10
-	land_id							14		/* Land ID for this create_land */	
-	zone 							14		/* Zone for this create_land */
+	land_percent 				8
+	land_position 				10 50
+	left_border 				-16
+	right_border 				70
+	top_border 					32
+	bottom_border 				32
+	border_fuzziness 			10
+	land_id						14		/* Land ID for this create_land */	
+	zone 						14		/* Zone for this create_land */
 }
 create_land 
 {
 	terrain_type VODA
-	land_percent 8
-	land_position 					80 50
-	left_border 70
-	right_border -16
-	top_border 30
-	bottom_border 30
-	border_fuzziness 10
-	land_id							15		/* Land ID for this create_land */	
-	zone 							15		/* Zone for this create_land */
+	land_percent 				8
+	land_position 				90 50
+	left_border 				70
+	right_border 				-16
+	top_border 					32
+	bottom_border 				32
+	border_fuzziness 			10
+	land_id						15		/* Land ID for this create_land */	
+	zone 						15		/* Zone for this create_land */
 }
 
 /* Loop for player starting areas */
@@ -177,7 +181,7 @@ if 8_PLAYER_GAME
 	{
 		terrain_type 				LAYER_A
 		number_of_tiles 				128
-		land_position 					44 50
+		land_position 					42 50
 		base_size 						12
 		set_circular_base
 		assign_to AT_PLAYER 1 0 0
@@ -258,7 +262,7 @@ elseif 7_PLAYER_GAME
 	{
 		terrain_type 				LAYER_A
 		number_of_tiles 				128
-		land_position 					44 50
+		land_position 					42 50
 		base_size 						12
 		set_circular_base
 		assign_to AT_PLAYER 1 0 0
@@ -329,7 +333,7 @@ elseif 6_PLAYER_GAME
 	{
 		terrain_type 				LAYER_A
 		number_of_tiles 				128
-		land_position 					44 50
+		land_position 					42 50
 		base_size 						12
 		set_circular_base
 		assign_to AT_PLAYER 1 0 0
@@ -774,9 +778,8 @@ create_object STONE
 /* Defender Stone */	
 create_object STONE 	
 {	
-	number_of_objects 					5		/* How many STONE tiles per group */
-	number_of_groups 					4		/* How many groups of STONE per player */
-	group_variance 						1
+	number_of_objects 					6		/* How many STONE tiles per group */
+	number_of_groups 					4		/* How many groups of STONE */
 	set_scaling_to_map_size						/* Scales groups to mapsize */
 	set_tight_grouping							/* Grouping type set to tight for this STONE */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
@@ -785,7 +788,7 @@ create_object STONE
 	temp_min_distance_group_placement 	16		/* Avoid placement of this create_object type within 40 tiles */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 	place_on_specific_land_id			11
-}		
+}
 /* Relic Placement */	
 create_object RELIC	
 {	
@@ -794,14 +797,14 @@ create_object RELIC
 	set_place_for_every_player					/* Places RELIC for each player land */
 	min_distance_to_players 			16		/* Minimum distance of RELIC generation from land origin */
 	max_distance_to_players 			32		/* Maximum distance of RELIC generation from land origin */
-	temp_min_distance_group_placement 	20		/* Avoid placement of this create_object type within 20 tiles */
+	temp_min_distance_group_placement 	16		/* Avoid placement of this create_object type within 16 tiles */
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped RELIC */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
 /* STRAGGLER trees */	
 create_object STRAGGLER	
 {	
-	number_of_objects 					32		/* STRAGGLER_A per player */
+	number_of_objects 					24		/* STRAGGLER_A per player */
 	set_gaia_object_only        				/* Required for gaia objects placed per-player */
 	set_place_for_every_player  				/* Places trees for each player land */
 	terrain_to_place_on 		LAYER_A			/* Limits objects to LAYER_A */
@@ -837,15 +840,15 @@ create_object HERDABLE_B
 /* Forage bushes  */	
 create_object KERICEK 	
 {	
-    number_of_objects 					6		/* How many FORAGE tiles per group */
-	number_of_groups 					1		/* How many groups of FORAGE per player */
+    number_of_objects 					6		/* How many KERICEK tiles per group */
+	number_of_groups 					1		/* How many groups of KERICEK per player */
     set_tight_grouping							/* Grouping type set to tight for this object */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
-	set_place_for_every_player					/* Places FORAGE for each player land */
-	min_distance_to_players 			6		/* Minimum distance of FORAGE generation from land origin */
-	max_distance_to_players 			10		/* Maximum distance of FORAGE generation from land origin */
+	set_place_for_every_player					/* Places KERICEK for each player land */
+	min_distance_to_players 			6		/* Minimum distance of KERICEK generation from land origin */
+	max_distance_to_players 			10		/* Maximum distance of KERICEK generation from land origin */
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
-	require_path 1								/* Requires a path to the FORAGE */
+	require_path 1								/* Requires a path to the KERICEK */
 }	
 /* Fish */	
 create_object MELKARYBA	
