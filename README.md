@@ -1,6 +1,6 @@
 ﻿# AOE2_RMS - Age of Empires 2 Random Map Scripts
 
-A collection of custom random map scripts (RMS) for Age of Empires 2, created by Kayo. These maps offer unique gameplay experiences with dynamic seasonal variations, strategic resource placement, and innovative map designs.
+A collection of custom random map scripts (RMS) for Age of Empires 2, created by Gatsuca. These maps offer unique gameplay experiences with dynamic seasonal variations, strategic resource placement, and innovative map designs.
 
 ## 📋 Table of Contents
 

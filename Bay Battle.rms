@@ -1,5 +1,5 @@
 /* *****************************************************************************
- * Bay Battle Made by Kayo 
+ * Bay Battle - Made by Gatsuca 
  * *****************************************************************************
  * A horseshoe shaped map with a bay and island within it.
  * Fight your way around and control the bay to win the day!
@@ -911,13 +911,13 @@ create_object PREDATOR_B
 /* Birds */
 create_object BIRDS_A
 {
-	number_of_objects 				rnd(4,8)		/* Number of BIRD_A per group */
-	set_scaling_to_map_size							/* Scales object amount to map size */
+	number_of_objects rnd(4,8)
+	set_scaling_to_map_size
 }
 create_object BIRDS_B
 {
-	number_of_objects 				rnd(2,4)		/* Number of BIRD_B per group */
-	set_scaling_to_map_size							/* Scales object amount to map size */
+	number_of_objects rnd(2,4)
+	set_scaling_to_map_size
 }
 /* Regicide game mode - spawns KING and CASTLE when Regicide is active */
 if REGICIDE
