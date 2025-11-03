@@ -1,4 +1,4 @@
-# AOE2_RMS - Age of Empires 2 Random Map Scripts
+﻿# AOE2_RMS - Age of Empires 2 Random Map Scripts
 
 A collection of custom random map scripts (RMS) for Age of Empires 2, created by Kayo. These maps offer unique gameplay experiences with dynamic seasonal variations, strategic resource placement, and innovative map designs.
 
@@ -35,7 +35,7 @@ This project contains three professionally crafted random map scripts that bring
 **Key Features:**
 
 - Naval bay in northeast corner with strategic resources
-- Forest terrain with seasonal variations
+- Multiple biome variations (Alpine, Desert, African, etc.)
 - Fish resources for naval economy
 - Multiple water depth levels (shallow, medium, deep)
 
@@ -46,7 +46,7 @@ This project contains three professionally crafted random map scripts that bring
 **Key Features:**
 
 - Rivers separate team territories
-- Seasonal water effects (ice in winter, shallow in other seasons)
+- Multiple biome variations (Alpine, Desert, African, etc.)
 - King of the Hill support with center island
 - Balanced resource distribution across landmasses
 
@@ -72,25 +72,34 @@ This project contains three professionally crafted random map scripts that bring
 - Special buildings (Castle Ruins)
 - Strategic military building placement
 
+### 5. Siege Breakout
+
+**Theme:** A Siege style map where 1 or 2 players face off against surrounding foes!
+**Focus:** Siege Defence
+**Key Features:**
+
+- An H shaped map with 1 or 2 players starting in a central chokepoint.
+- Multiple biome variations (Alpine, Desert, African, etc.)
+- 3 to 8 player support.
+- Map scaling for lands for chokepoint advantage.
+
 ## ✨ Features
 
 <a id="features"></a>
 
 ### Seasonal/Biome System
 
-Each map includes dynamic seasonal selection:
+Each map includes dynamic biome selection using F_seasons.inc.
 
-**Bay Battle:**
+Biomes included but not limited to:
 
-- Spring (25% chance) - Birch forests, flowers, sheep
-- Summer (25% chance) - Mixed forests, cows
-- Autumn (25% chance) - Autumn forests, turkeys
-- Winter (25% chance) - Snow forests, goats
-
-**Ruin Rumble, Forest River, Nomad Ruins:**
-
-- 15+ biome variations including Alpine, Desert, African, Asian, Tropical, and Frozen
-- Each biome affects terrain appearance, color correction, and civilization themes
+ - **Alpine**
+ - **Mediterranean**
+ - **Desert**
+ - **Tropical**
+ - **European Spring**
+ - **European Summer**
+ - **European Autumn** 
 
 ### Resource Management
 
