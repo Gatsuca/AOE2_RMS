@@ -226,7 +226,7 @@ create_terrain WOODIES
 create_terrain WOODIES_B
 {
 	base_terrain WOODIES			    /* Terrain type to create new terrain from */
-	land_percent                8      /* Percentage of map covered in WOODIES */
+	land_percent                8      	/* Percentage of map covered in WOODIES_B */
 	number_of_clumps            128	    /* Number of WOODIES_B clumps */
 	set_scale_by_groups				    /* Scales clumps by map size */
 	clumping_factor             20		/* The extent to which terrain prefers to clump together near existing tiles */
@@ -234,8 +234,8 @@ create_terrain WOODIES_B
 create_terrain WOODIES_C
 {
 	base_terrain WOODIES			    /* Terrain type to create new terrain from */
-	land_percent                4      	/* Percentage of map covered in WOODIES */
-	number_of_clumps            128	    /* Number of WOODIES_B clumps */
+	land_percent                4      	/* Percentage of map covered in WOODIES_C */
+	number_of_clumps            128	    /* Number of WOODIES_C clumps */
 	set_scale_by_groups				    /* Scales clumps by map size */
 	clumping_factor             20		/* The extent to which terrain prefers to clump together near existing tiles */
 }
@@ -248,7 +248,7 @@ create_terrain WOODIES
 	clumping_factor             30		/* The extent to which terrain prefers to clump together near existing tiles */
 	set_scale_by_groups				    /* Scales clumps by map size */
 	set_avoid_player_start_areas	    /* Avoids placing WOODIES in player starting areas */
-	spacing_to_other_terrain_types 2	/* 3-tile distance to other terrain types */
+	spacing_to_other_terrain_types 2	/* 2-tile distance to other terrain types */
 }
 
 create_terrain LAYER_A
@@ -302,7 +302,7 @@ accumulate_connections 			/* Allows you to replace terrains created in previous 
 if FIXED_POSITIONS
 create_connect_teams_lands 
 {
-	/* Replace all terrain in path with corresponding dirt */
+	/* Replace all terrain in path with corresponding CESTA */
 	default_terrain_replacement CESTA								
 	/* Terrain cost scale of 1-20 - lower values are more favorable - 0 = impassable  */ 
 	terrain_cost 		LAYER_A 		1		
@@ -319,7 +319,7 @@ else
 endif
 create_connect_to_nonplayer_land 
 {
-	/* Replace all terrain in path with corresponding dirt */
+	/* Replace all terrain in path with corresponding CESTA */
 	default_terrain_replacement CESTA				
 	/* Terrain cost scale of 1-20 - lower values are more favorable - 0 = impassable  */ 
 	terrain_cost 		LAYER_A 		1		
@@ -339,10 +339,10 @@ create_connect_to_nonplayer_land
 create_object WALL 
 {
 	number_of_objects       9999		/* Maximum number of wall segments */
-	terrain_to_place_on TEMP_TERRAIN	/* Places walls on desert terrain */
+	terrain_to_place_on TEMP_TERRAIN	/* Places walls on TEMP_TERRAIN */
 	set_gaia_object_only			    /* Walls belong to Gaia (neutral) */
 	set_gaia_unconvertible			    /* Walls cannot be converted */
-	actor_area              99 			/* Actor area ID 5 */
+	actor_area              99 			/* Actor area ID 99 */
 	actor_area_radius       5			/* 5-tile radius for actor area */
 }
 /* Town Center placement - placed at land origin for every player */
@@ -460,10 +460,10 @@ create_object RELIC
 {	
 	number_of_objects 					2		/* Number of RELIC per-player */
 	set_scaling_to_player_number				/* Scales number of RELIC by player count */
-	place_on_specific_land_id			1		/* Place this RELIC on land 1 */
-	terrain_to_place_on				DLC_ROADGRAVEL
+	place_on_specific_land_id			11		/* Place this RELIC on land 11 */
+	terrain_to_place_on				DLC_ROADGRAVEL	/* Limits objects to DLC_ROADGRAVEL */
 	min_distance_to_players 			16		/* Minimum distance of RELIC generation from land origin */
-	temp_min_distance_group_placement 	32		/* Avoid placement of this create_object type within 16 tiles */
+	temp_min_distance_group_placement 	32		/* Avoid placement of this create_object type within 32 tiles */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
 /* STRAGGLER trees */	
@@ -509,17 +509,17 @@ create_object GOLD
 /* Predators */
 create_object PREDATOR_A
 {
-	number_of_objects 					32			/* Number of PREDATOR_A per group */
+	number_of_objects 					32			/* Number of PREDATOR_A */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 	min_distance_to_players 			24			/* Minimum distance PREDATOR_A to be spawned in relation to players */
-	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 32 tiles */
+	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */
 }
 create_object PREDATOR_B
 {
-	number_of_objects 					24			/* Number of PREDATOR_B per group */
+	number_of_objects 					24			/* Number of PREDATOR_B */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 	min_distance_to_players 			24			/* Minimum distance PREDATOR_B to be spawned in relation to players */
-	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 32 tiles */	
+	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */	
 }
 /* Birds */
 create_object BIRDS_A
@@ -532,7 +532,7 @@ create_object BIRDS_B
 	number_of_objects 				rnd(2,4)		/* Number of BIRD_B per group */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 }
-
+/* Castle Ruins Decoration */
 create_object CASTLE_RUINS 
 {
 	number_of_objects           		1		    /* Number of CASTLE_RUINS per group */
@@ -548,31 +548,31 @@ create_object CASTLE_RUINS
 }
 create_object RUBBLE_1_X_1 
 {
-	number_of_objects 				rnd(2,6)		/* 1-4 RUBBLE_1_X_1 per group */
-	number_of_groups 					4			/* 32 groups total */
+	number_of_objects 				rnd(2,6)		/* 2-6 RUBBLE_1_X_1 per group */
+	number_of_groups 					4			/* 4 groups total */
 	set_tight_grouping			            		/* RUBBLE_1_X_1 spawn close together */
 	set_scaling_to_map_size			        		/* Scales with map size */
     make_indestructible								/* Makes object indestructible */
 	find_closest									/* Places at closest valid location */
-	actor_area_to_place_in 				9999		/* Must be placed within actor area 5000 */
+	actor_area_to_place_in 				9999		/* Must be placed within actor area 9999 */
 }
-
+/* Neutral Trade Workshop */
 create_object T_WORKSHOP 
 {
 	number_of_objects 					1			/* Only 1 T_WORKSHOP */
 	set_gaia_object_only			        		/* T_WORKSHOP belongs to Gaia */
-	set_building_capturable			        		/* T_WORKSHOP can be captured */
+	set_gaia_unconvertible			        		/* Cannot be converted */
 	place_on_specific_land_id 			11		    /* Places on central city land (ID 11) */
     make_indestructible                     		/* Makes object indestructible */
 	find_closest					        		/* Places at closest valid location */
 	actor_area 							700			/* Actor area ID 700 */
-	actor_area_radius 					4			/* 8-tile radius for actor area */
+	actor_area_radius 					4			/* 4-tile radius for actor area */
 } 
-
+/* Military Building Decoration */
 create_object SIEGE_WORKSHOP
 {
 	number_of_objects 					1			/* 1 SIEGE_WORKSHOP per group */
-	number_of_groups 					4			/* 5 groups total */
+	number_of_groups 					4			/* 4 groups total */
 	set_scaling_to_map_size			        		/* Scales with map size */
 	temp_min_distance_group_placement 	30			/* Avoids other SIEGE_WORKSHOP within 30 tiles */
 	min_distance_to_players 			25		    /* Minimum 25 tiles from players */
@@ -616,202 +616,192 @@ create_object BLACKSMITH
 
 create_object STABLE 
 {
-	number_of_objects 1			            /* 1 STABLE per group */
-	number_of_groups 4			            /* 4 groups total */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 20	/* Avoids other STABLE within 20 tiles */
-	min_distance_group_placement 3		    /* Minimum 3 tiles between STABLE in same group */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-	actor_area_to_place_in 5000		        /* Must be placed within actor area 5000 */
-	avoid_actor_area 700			        /* Avoids actor area 700 */
-	avoid_actor_area 99				        /* Avoids actor area 99 */
+	number_of_objects 					1			/* 1 STABLE per group */
+	number_of_groups 					4			/* 4 groups total */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	20			/* Avoids other STABLE within 20 tiles */
+	min_distance_group_placement 		3		    /* Minimum 3 tiles between STABLE in same group */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+	actor_area_to_place_in 				5000		/* Must be placed within actor area 5000 */
+	avoid_actor_area 					700			/* Avoids actor area 700 */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
 }
 
 create_object ARCHERY_RANGE 
 {
-	number_of_objects 1			            /* 1 ARCHERY_RANGE per group */
-	number_of_groups 4			            /* 4 groups total */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 20	/* Avoids other ARCHERY_RANGE within 20 tiles */
-	min_distance_group_placement 3		    /* Minimum 3 tiles between ARCHERY_RANGE in same group */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-	actor_area_to_place_in 5000		        /* Must be placed within actor area 5000 */
-	avoid_actor_area 700			        /* Avoids actor area 700 */
-	avoid_actor_area 99				        /* Avoids actor area 99 */
+	number_of_objects 					1			/* 1 ARCHERY_RANGE per group */
+	number_of_groups 					4			/* 4 groups total */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	20			/* Avoids other ARCHERY_RANGE within 20 tiles */
+	min_distance_group_placement 		3		    /* Minimum 3 tiles between ARCHERY_RANGE in same group */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+	actor_area_to_place_in 				5000		/* Must be placed within actor area 5000 */
+	avoid_actor_area 					700			/* Avoids actor area 700 */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
 }
-
+/* Market Decoration */
 create_object MARKET_STALL 
 {
-	number_of_objects 64			        /* Up to 64 MARKET_STALL */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 5	    /* Avoids other MARKET_STALL within 5 tiles */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-	actor_area_to_place_in 5000		        /* Must be placed within actor area 5000 */
-	actor_area 5002				            /* Actor area ID 5002 */
-	actor_area_radius 1			            /* 1-tile radius for actor area */
-	avoid_actor_area 99				        /* Avoids actor area 99 */
-	terrain_to_place_on DLC_ROADGRAVEL	    /* Places on DLC_ROADGRAVEL terrain */
+	number_of_objects 					64			/* Up to 64 MARKET_STALL */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	5	    	/* Avoids other MARKET_STALL within 5 tiles */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+	actor_area_to_place_in 				5000		/* Must be placed within actor area 5000 */
+	actor_area 							5002		/* Actor area ID 5002 */
+	actor_area_radius 					1			/* 1-tile radius for actor area */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
 }
-
+/* Goods Decoration */
 create_object GOODS 
 {
-	number_of_objects 64			        /* Up to 64 GOODS */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 5	    /* Avoids other GOODS within 5 tiles */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-	actor_area_to_place_in 5002		        /* Must be placed within actor area 5002 */
-	avoid_actor_area 99				        /* Avoids actor area 99 */
-	terrain_to_place_on DLC_ROADGRAVEL	    /* Places on DLC_ROADGRAVEL terrain */
+	number_of_objects 					64			/* Up to 64 GOODS */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	5	    	/* Avoids other GOODS within 5 tiles */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+	actor_area_to_place_in 				5002		/* Must be placed within actor area 5002 */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	terrain_to_place_on 			DLC_ROADGRAVEL 	/* Places on DLC_ROADGRAVEL terrain */
 }
-
+/* Feudal Style House Decoration */
 create_object HOUSE_F 
 {
-	number_of_objects 1			            /* 1 HOUSE_F per group */
-	number_of_groups 64			            /* 64 groups total */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 3	    /* Avoids other HOUSE_F within 3 tiles */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-	terrain_to_place_on DLC_ROADGRAVEL	    /* Places on DLC_ROADGRAVEL terrain */
-	avoid_actor_area 99				        /* Avoids actor area 99 */
-	avoid_actor_area 700			        /* Avoids actor area 700 */
-	avoid_actor_area 5000			        /* Avoids actor area 5000 */
-	actor_area 660				            /* Actor area ID 660 */
-	actor_area_radius 2			            /* 2-tile radius for actor area */
+	number_of_objects 					1			/* 1 HOUSE_F per group */
+	number_of_groups 					64			/* 64 groups total */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	3	    	/* Avoids other HOUSE_F within 3 tiles */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	avoid_actor_area 					700			/* Avoids actor area 700 */
+	avoid_actor_area 					5000		/* Avoids actor area 5000 */
+	actor_area 							660			/* Actor area ID 660 */
+	actor_area_radius 					2			/* 2-tile radius for actor area */
 } 
-
+/* Destruction Decoration */
 create_object RUBBLE_1_X_1 
 {
-	number_of_objects rnd(1,6)			    /* 1-4 RUBBLE_1_X_1 per group */
-	number_of_groups 64			            /* 64 groups total */
-	set_tight_grouping			            /* RUBBLE_1_X_1 spawn close together */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 4	    /* Avoids other RUBBLE_1_X_1 within 4 tiles */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-    make_indestructible						/* Makes object indestructible */
-	min_distance_to_map_edge (LENGTH / 3)
-	avoid_actor_area 99				        /* Avoids actor area 99 */
-	actor_area 666				            /* Actor area ID 666 */
+	number_of_objects 				rnd(1,6)		/* 1-6 RUBBLE_1_X_1 per group */
+	number_of_groups 					64			/* 64 groups total */
+	set_tight_grouping			            		/* RUBBLE_1_X_1 spawn close together */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	4	    	/* Avoids other RUBBLE_1_X_1 within 4 tiles */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+    make_indestructible								/* Makes object indestructible */
+	min_distance_to_map_edge 		(LENGTH / 3)	/* Limiting distance to map edge - Scaled for mapsize */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	actor_area 							666			/* Actor area ID 666 */
 }
 create_object RUBBLE_2_X_2 
 {
-	number_of_objects 1			    		/* 1 RUBBLE_2_X_2 per group */
-	number_of_groups 32			            /* 32 groups total */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 4	    /* Avoids other RUBBLE_2_X_2 within 4 tiles */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-    make_indestructible						/* Makes object indestructible */
-	min_distance_to_map_edge (LENGTH / 3)
-	avoid_actor_area 99				        /* Avoids actor area 99 */	
-	actor_area 777				            /* Actor area ID 777 */
+	number_of_objects 					1			/* 1 RUBBLE_2_X_2 per group */
+	number_of_groups 					32			/* 32 groups total */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	4	    	/* Avoids other RUBBLE_2_X_2 within 4 tiles */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+    make_indestructible								/* Makes object indestructible */
+	min_distance_to_map_edge 		(LENGTH / 3)	/* Limiting distance to map edge - Scaled for mapsize */
+	avoid_actor_area 					99			/* Avoids actor area 99 */	
+	actor_area 							777			/* Actor area ID 777 */
 }
 create_object CRATER 
 {
-	number_of_objects rnd(1,4)			    /* 1 CRATER per group */
-	number_of_groups 16			            /* 16 groups total */
-	set_scaling_to_map_size			        /* Scales with map size */
-	temp_min_distance_group_placement 4	    /* Avoids other CRATER within 4 tiles */
-	set_gaia_object_only			        /* Belongs to Gaia */
-	set_gaia_unconvertible			        /* Cannot be converted */
-    make_indestructible						/* Makes object indestructible */
-	min_distance_to_map_edge (LENGTH / 4)
-	avoid_actor_area 99				        /* Avoids actor area 99 */	
-	actor_area 888				            /* Actor area ID 777 */
+	number_of_objects 				rnd(1,4)		/* 1 CRATER per group */
+	number_of_groups 					16			/* 16 groups total */
+	set_scaling_to_map_size			        		/* Scales with map size */
+	temp_min_distance_group_placement 	4	    	/* Avoids other CRATER within 4 tiles */
+	set_gaia_object_only			        		/* Belongs to Gaia */
+	set_gaia_unconvertible			        		/* Cannot be converted */
+    make_indestructible								/* Makes object indestructible */
+	min_distance_to_map_edge 		(LENGTH / 4)	/* Limiting distance to map edge - Scaled for mapsize */
+	avoid_actor_area 					99			/* Avoids actor area 99 */	
+	actor_area 							888			/* Actor area ID 888 */
 }
 
 create_object HUNTABLE 
 {
-	number_of_objects 2			            /* 2 HUNTABLE per group */
-	number_of_groups 5			            /* 5 groups total */
-	set_tight_grouping			            /* HUNTABLE spawn close together */
-	set_scaling_to_map_size		            /* Scales with map size */
-	temp_min_distance_group_placement 20	/* Avoids other HUNTABLE groups within 20 tiles */
-	set_gaia_object_only		            /* Belongs to Gaia */
-	actor_area_to_place_in 5002		        /* Must be placed within actor area 5002 */
-	avoid_actor_area 99			            /* Avoids actor area 99 */
-	terrain_to_place_on DLC_ROADGRAVEL	    /* Places on DLC_ROADGRAVEL terrain */
+	number_of_objects 					2			/* 2 HUNTABLE per group */
+	number_of_groups 					5			/* 5 groups total */
+	set_tight_grouping			            		/* HUNTABLE spawn close together */
+	set_scaling_to_map_size		            		/* Scales with map size */
+	temp_min_distance_group_placement 	20			/* Avoids other HUNTABLE groups within 20 tiles */
+	set_gaia_object_only		            		/* Belongs to Gaia */
+	actor_area_to_place_in 				5002		/* Must be placed within actor area 5002 */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
 } 
 
 create_object LURABLE_A
 {
-	number_of_objects 2			            /* 2 LURABLE_A per group */
-	number_of_groups 5			            /* 5 groups total */
-	set_tight_grouping			            /* LURABLE_A spawn close together */
-	set_scaling_to_map_size		            /* Scales with map size */
-	temp_min_distance_group_placement 20	/* Avoids other LURABLE_A groups within 20 tiles */
-	set_gaia_object_only		            /* Belongs to Gaia */
-	actor_area_to_place_in 5002		        /* Must be placed within actor area 5002 */
-	avoid_actor_area 99			            /* Avoids actor area 99 */
-	terrain_to_place_on DLC_ROADGRAVEL	    /* Places on DLC_ROADGRAVEL terrain */
+	number_of_objects 					2			/* 2 LURABLE_A per group */
+	number_of_groups 					5			/* 5 groups total */
+	set_tight_grouping			            		/* LURABLE_A spawn close together */
+	set_scaling_to_map_size		            		/* Scales with map size */
+	temp_min_distance_group_placement 	20			/* Avoids other LURABLE_A groups within 20 tiles */
+	set_gaia_object_only		            		/* Belongs to Gaia */
+	actor_area_to_place_in 				5002		/* Must be placed within actor area 5002 */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
 } 
 	
 create_object LURABLE_B	
 {		
-    number_of_objects 2			            /* 2 LURABLE_B per group */		
-    number_of_groups 5			            /* 5 groups total */		
-    set_tight_grouping			            /* LURABLE_B spawn close together */
-	set_scaling_to_map_size		            /* Scales with map size */
-	temp_min_distance_group_placement 20	/* Avoids other LURABLE_B groups within 20 tiles */
-	set_gaia_object_only		            /* Belongs to Gaia */
-	actor_area_to_place_in 5002		        /* Must be placed within actor area 5002 */
-	avoid_actor_area 99			            /* Avoids actor area 99 */
-	terrain_to_place_on DLC_ROADGRAVEL	    /* Places on DLC_ROADGRAVEL terrain */
-}
-
-create_object PREDATOR_A
-{
-	number_of_objects 1			            /* 1 predator per group */
-	set_scaling_to_map_size		            /* Scales with map size */
-	set_gaia_object_only			        /* Predator belongs to Gaia */
-	set_place_for_every_player		        /* Places predator for each player */
-	min_distance_to_players 35		        /* Minimum 35 tiles from players */
-	temp_min_distance_group_placement 20	/* Avoids other predators within 20 tiles */
+    number_of_objects 					2			/* 2 LURABLE_B per group */		
+    number_of_groups 					5			/* 5 groups total */		
+    set_tight_grouping			            		/* LURABLE_B spawn close together */
+	set_scaling_to_map_size		            		/* Scales with map size */
+	temp_min_distance_group_placement 	20			/* Avoids other LURABLE_B groups within 20 tiles */
+	set_gaia_object_only		            		/* Belongs to Gaia */
+	actor_area_to_place_in 				5002		/* Must be placed within actor area 5002 */
+	avoid_actor_area 					99			/* Avoids actor area 99 */
+	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
 }
 
 if INFINITE_RESOURCES
 else
 	create_object TEMPOBJECT 
 	{
-		second_object STONE			            /* Uses TEMPOBJECT as placeholder for STONE */
-		number_of_objects rnd(3,5)			    /* 3-5 STONE tiles per group */
-		number_of_groups 2			            /* 2 groups per player */
-		group_placement_radius 2		        /* 2-tile radius for group placement */
-		min_distance_to_players 32		        /* Minimum 32 tiles from players */
-		temp_min_distance_group_placement 16	/* Avoids other STONE groups within 16 tiles */
-		set_gaia_object_only		            /* Belongs to Gaia */
-		set_place_for_every_player		        /* Places STONE for each player */
-		terrain_to_place_on DLC_ROADGRAVEL	    /* Places on road gravel terrain */
-		set_tight_grouping			            /* STONE tiles spawn close together */
-		find_closest				            /* Places at closest valid location */
-		actor_area_radius 10			        /* 10-tile radius for actor area */
-		avoid_actor_area 99			            /* Avoids actor area 99 */
-		avoid_actor_area 700			        /* Avoids actor area 700 */
-		avoid_actor_area 5000			        /* Avoids actor area 5000 */
-		avoid_actor_area 660			        /* Avoids actor area 660 */
+		second_object 					STONE			/* Uses TEMPOBJECT as placeholder for STONE */
+		number_of_objects 				rnd(3,5)		/* 3-5 STONE tiles per group */
+		number_of_groups 					2			/* 2 groups per player */
+		group_placement_radius 				2		    /* 2-tile radius for group placement */
+		min_distance_to_players 			32		    /* Minimum 32 tiles from players */
+		temp_min_distance_group_placement 	16			/* Avoids other STONE groups within 16 tiles */
+		set_gaia_object_only		            		/* Belongs to Gaia */
+		set_place_for_every_player		        		/* Places STONE for each player */
+		terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on road gravel terrain */
+		set_tight_grouping			            		/* STONE tiles spawn close together */
+		find_closest				            		/* Places at closest valid location */
+		actor_area_radius 					10			/* 10-tile radius for actor area */
+		avoid_actor_area 					99			/* Avoids actor area 99 */
+		avoid_actor_area 					700			/* Avoids actor area 700 */
+		avoid_actor_area 					5000		/* Avoids actor area 5000 */
+		avoid_actor_area 					660			/* Avoids actor area 660 */
 	}
 	create_object TEMPOBJECT 
 	{
-		second_object GOLD			            /* Uses TEMPOBJECT as placeholder for GOLD */
-		number_of_objects rnd(2,4)			    /* 2-4 GOLD tiles per group */
-		number_of_groups 2			            /* 2 groups per player */
-		group_placement_radius 2		        /* 2-tile radius for group placement */
-		min_distance_to_players 32		        /* Minimum 32 tiles from players */
-		temp_min_distance_group_placement 16	/* Avoids other GOLD groups within 16 tiles */
-		set_gaia_object_only		            /* Belongs to Gaia */
-		set_place_for_every_player		        /* Places GOLD for each player */
-		terrain_to_place_on DLC_ROADGRAVEL	    /* Places on road gravel terrain */
-		set_tight_grouping			            /* GOLD tiles spawn close together */
-		find_closest				            /* Places at closest valid location */
-		actor_area_radius 10			        /* 10-tile radius for actor area */
-		avoid_actor_area 99			            /* Avoids actor area 99 */
-		avoid_actor_area 5000			        /* Avoids actor area 5000 */
-		avoid_actor_area 700			        /* Avoids actor area 700 */
-		avoid_actor_area 660			        /* Avoids actor area 660 */
+		second_object 					GOLD			/* Uses TEMPOBJECT as placeholder for GOLD */
+		number_of_objects 				rnd(2,4)		/* 2-4 GOLD tiles per group */
+		number_of_groups 					2			/* 2 groups per player */
+		group_placement_radius 				2		    /* 2-tile radius for group placement */
+		min_distance_to_players 			32		    /* Minimum 32 tiles from players */
+		temp_min_distance_group_placement 	16			/* Avoids other GOLD groups within 16 tiles */
+		set_gaia_object_only		            		/* Belongs to Gaia */
+		set_place_for_every_player		        		/* Places GOLD for each player */
+		terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on road gravel terrain */
+		set_tight_grouping			            		/* GOLD tiles spawn close together */
+		find_closest				            		/* Places at closest valid location */
+		actor_area_radius 					10			/* 10-tile radius for actor area */
+		avoid_actor_area 					99			/* Avoids actor area 99 */
+		avoid_actor_area 					5000		/* Avoids actor area 5000 */
+		avoid_actor_area 					700			/* Avoids actor area 700 */
+		avoid_actor_area 					660			/* Avoids actor area 660 */
 	}
 endif
