@@ -28,12 +28,12 @@ else
 		percent_chance 6 	#define PH_TROPHICALSOUTH
 		percent_chance 6 	#define PH_TROPHICALSOUTH_B
 		percent_chance 8 	#define PH_TROPHICALEAST
-		percent_chance 10 	#define PH_DESERT
-		percent_chance 12 	#define PH_AFRICAN		
-		percent_chance 6 	#define PH_ASIAN
-		percent_chance 6 	#define PH_ASIAN_B
-		percent_chance 5 	#define PH_AUTUMN
-		percent_chance 5 	#define PH_AUTUMN_B
+		percent_chance 8 	#define PH_DESERT
+		percent_chance 8 	#define PH_AFRICAN		
+		percent_chance 8 	#define PH_ASIAN
+		percent_chance 8 	#define PH_ASIAN_B
+		percent_chance 6 	#define PH_AUTUMN
+		percent_chance 6 	#define PH_AUTUMN_B
 		percent_chance 4 	#define PH_FROZEN
 	end_random
 endif
@@ -72,7 +72,7 @@ grouped_by_team  					/* Players positioned together in circle with variation */
 else
 random_placement  					/* Players positioned randomly in circle with variation */
 endif
-ai_info_map_type ARENA 0 1 0  		/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=0, ShowType=0 */
+ai_info_map_type ARENA 0 0 0  		/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=0, ShowType=0 */
 behavior_version 1					/* Used for versioning changes that might affect how existing maps generate */
 /* City civilization selector - based upon biome style */
 if PH_ALPINE				set_gaia_civilization 3
@@ -461,15 +461,16 @@ create_object RELIC
 	number_of_objects 					2		/* Number of RELIC per-player */
 	set_scaling_to_player_number				/* Scales number of RELIC by player count */
 	place_on_specific_land_id			11		/* Place this RELIC on land 11 */
-	terrain_to_place_on				DLC_ROADGRAVEL	/* Limits objects to DLC_ROADGRAVEL */
 	min_distance_to_players 			16		/* Minimum distance of RELIC generation from land origin */
+	min_distance_to_map_edge 	(LENGTH / 3)	/* Limiting distance to map edge - Scaled for mapsize */
 	temp_min_distance_group_placement 	32		/* Avoid placement of this create_object type within 32 tiles */
 	enable_tile_shuffling						/* Increases randomness of object positions */
+	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped RELIC */
 }	
 /* STRAGGLER trees */	
 create_object STRAGGLER	
 {	
-	number_of_objects 					32		/* STRAGGLER_A per player */
+	number_of_objects 					32		/* STRAGGLER per player */
 	set_gaia_object_only        				/* Required for gaia objects placed per-player */
 	set_place_for_every_player  				/* Places trees for each player land */
 	terrain_to_place_on 			LAYER_A		/* Limits objects to LAYER_A */
@@ -509,14 +510,14 @@ create_object GOLD
 /* Predators */
 create_object PREDATOR_A
 {
-	number_of_objects 					32			/* Number of PREDATOR_A */
+	number_of_objects 					16			/* Number of PREDATOR_A */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 	min_distance_to_players 			24			/* Minimum distance PREDATOR_A to be spawned in relation to players */
 	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */
 }
 create_object PREDATOR_B
 {
-	number_of_objects 					24			/* Number of PREDATOR_B */
+	number_of_objects 					16			/* Number of PREDATOR_B */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 	min_distance_to_players 			24			/* Minimum distance PREDATOR_B to be spawned in relation to players */
 	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */	
@@ -524,12 +525,16 @@ create_object PREDATOR_B
 /* Birds */
 create_object BIRDS_A
 {
-	number_of_objects 				rnd(4,8)		/* Number of BIRD_A per group */
+	number_of_objects 					4			/* Number of BIRDS_A per group */
+	number_of_groups            		2		    /* Number of BIRDS_A groups */
+	group_variance						2           /* BIRDS_A randomly varied by up to the amount specified */	
 	set_scaling_to_map_size							/* Scales object amount to map size */
 }
 create_object BIRDS_B
 {
-	number_of_objects 				rnd(2,4)		/* Number of BIRD_B per group */
+	number_of_objects 					4			/* Number of BIRD_B per group */
+	number_of_groups            		2		    /* Number of BIRD_B groups */
+	group_variance						2           /* BIRDS_B randomly varied by up to the amount specified */	
 	set_scaling_to_map_size							/* Scales object amount to map size */
 }
 /* Castle Ruins Decoration */
@@ -548,8 +553,9 @@ create_object CASTLE_RUINS
 }
 create_object RUBBLE_1_X_1 
 {
-	number_of_objects 				rnd(2,6)		/* 2-6 RUBBLE_1_X_1 per group */
+	number_of_objects 					3			/* 1-5 RUBBLE_1_X_1 per group */
 	number_of_groups 					4			/* 4 groups total */
+	group_variance 						2			/* RUBBLE_1_X_1 randomly varied by up to the amount specified */
 	set_tight_grouping			            		/* RUBBLE_1_X_1 spawn close together */
 	set_scaling_to_map_size			        		/* Scales with map size */
     make_indestructible								/* Makes object indestructible */
@@ -585,7 +591,6 @@ create_object SIEGE_WORKSHOP
 	actor_area_radius 					8			/* 8-tile radius for actor area */
 	min_distance_to_map_edge 			16		    /* Minimum 16 tiles from map edge */
 }
-
 create_object BARRACKS_F 
 {
 	number_of_objects 					1			/* 1 BARRACKS_F per group */
@@ -599,7 +604,6 @@ create_object BARRACKS_F
 	avoid_actor_area 					700			/* Avoids actor area 700 */
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 }
-
 create_object BLACKSMITH 
 {
 	number_of_objects 					1			/* 1 BLACKSMITH per group */
@@ -613,7 +617,6 @@ create_object BLACKSMITH
 	avoid_actor_area 					700			/* Avoids actor area 700 */
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 }
-
 create_object STABLE 
 {
 	number_of_objects 					1			/* 1 STABLE per group */
@@ -627,7 +630,6 @@ create_object STABLE
 	avoid_actor_area 					700			/* Avoids actor area 700 */
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 }
-
 create_object ARCHERY_RANGE 
 {
 	number_of_objects 					1			/* 1 ARCHERY_RANGE per group */
@@ -686,15 +688,15 @@ create_object HOUSE_F
 /* Destruction Decoration */
 create_object RUBBLE_1_X_1 
 {
-	number_of_objects 				rnd(1,6)		/* 1-6 RUBBLE_1_X_1 per group */
+	number_of_objects 					3			/* 1-5 RUBBLE_1_X_1 per group */
 	number_of_groups 					64			/* 64 groups total */
-	set_tight_grouping			            		/* RUBBLE_1_X_1 spawn close together */
+	group_variance 						2			/* RUBBLE_1_X_1 randomly varied by up to the amount specified */
 	set_scaling_to_map_size			        		/* Scales with map size */
 	temp_min_distance_group_placement 	4	    	/* Avoids other RUBBLE_1_X_1 within 4 tiles */
 	set_gaia_object_only			        		/* Belongs to Gaia */
 	set_gaia_unconvertible			        		/* Cannot be converted */
     make_indestructible								/* Makes object indestructible */
-	min_distance_to_map_edge 		(LENGTH / 3)	/* Limiting distance to map edge - Scaled for mapsize */
+	min_distance_to_map_edge 		(LENGTH / 3.8)	/* Limiting distance to map edge - Scaled for mapsize */
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 	actor_area 							666			/* Actor area ID 666 */
 }
@@ -713,8 +715,9 @@ create_object RUBBLE_2_X_2
 }
 create_object CRATER 
 {
-	number_of_objects 				rnd(1,4)		/* 1 CRATER per group */
+	number_of_objects 					2			/* 1-4 CRATER per group */
 	number_of_groups 					16			/* 16 groups total */
+	group_variance 						2			/* CRATER randomly varied by up to the amount specified */	
 	set_scaling_to_map_size			        		/* Scales with map size */
 	temp_min_distance_group_placement 	4	    	/* Avoids other CRATER within 4 tiles */
 	set_gaia_object_only			        		/* Belongs to Gaia */
@@ -724,7 +727,7 @@ create_object CRATER
 	avoid_actor_area 					99			/* Avoids actor area 99 */	
 	actor_area 							888			/* Actor area ID 888 */
 }
-
+/* Food sources within the walls */
 create_object HUNTABLE 
 {
 	number_of_objects 					2			/* 2 HUNTABLE per group */
@@ -737,7 +740,6 @@ create_object HUNTABLE
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
 } 
-
 create_object LURABLE_A
 {
 	number_of_objects 					2			/* 2 LURABLE_A per group */
@@ -749,8 +751,7 @@ create_object LURABLE_A
 	actor_area_to_place_in 				5002		/* Must be placed within actor area 5002 */
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
-} 
-	
+} 	
 create_object LURABLE_B	
 {		
     number_of_objects 					2			/* 2 LURABLE_B per group */		
@@ -763,7 +764,7 @@ create_object LURABLE_B
 	avoid_actor_area 					99			/* Avoids actor area 99 */
 	terrain_to_place_on 			DLC_ROADGRAVEL	/* Places on DLC_ROADGRAVEL terrain */
 }
-
+/* Placement of central resources as long as INFINITE_RESOURCES is off */
 if INFINITE_RESOURCES
 else
 	create_object TEMPOBJECT 
