@@ -26,16 +26,16 @@ else
 		percent_chance 5 	#define PH_SPRING
 		percent_chance 5 	#define PH_SPRING_B
 		percent_chance 5 	#define PH_SPRING_C
-		percent_chance 11 	#define PH_MEDISOUTH
+		percent_chance 12 	#define PH_MEDISOUTH
 		percent_chance 12 	#define PH_TROPHICALSOUTH
 		percent_chance 8 	#define PH_TROPHICALEAST
-		percent_chance 10 	#define PH_DESERT
-		percent_chance 10 	#define PH_AFRICAN		
+		percent_chance 8 	#define PH_DESERT
+		percent_chance 8 	#define PH_AFRICAN		
 		percent_chance 6 	#define PH_ASIAN
 		percent_chance 6 	#define PH_ASIAN_B
-		percent_chance 5 	#define PH_AUTUMN
-		percent_chance 5 	#define PH_AUTUMN_B
-		percent_chance 4 	#define PH_FROZEN
+		percent_chance 6 	#define PH_AUTUMN
+		percent_chance 6 	#define PH_AUTUMN_B
+		percent_chance 5 	#define PH_FROZEN
 	end_random
 endif
 #define PH_EXTENDEDSEASONS
@@ -517,7 +517,7 @@ elseif 2_PLAYER_GAME
 	{
 		terrain_type 				LAYER_A
 		number_of_tiles 				128
-		land_position 					44 50
+		land_position 					10 10
 		base_size 						12
 		set_circular_base
 		assign_to AT_PLAYER 1 0 0
@@ -527,7 +527,7 @@ elseif 2_PLAYER_GAME
 	{
 		terrain_type 				LAYER_A
 		number_of_tiles 				128	
-		land_position 					60 50
+		land_position 					90 90
 		base_size 						12
 		set_circular_base
 		assign_to AT_PLAYER 2 0 0
@@ -925,13 +925,17 @@ create_object PREDATOR_B
 /* Birds */
 create_object BIRDS_A
 {
-	number_of_objects rnd(4,8)
-	set_scaling_to_map_size
+	number_of_objects 					4			/* Number of BIRDS_A per group */
+	number_of_groups            		2		    /* Number of BIRDS_A groups */
+	group_variance						2           /* BIRDS_A randomly varied by up to the amount specified */	
+	set_scaling_to_map_size							/* Scales object amount to map size */
 }
 create_object BIRDS_B
 {
-	number_of_objects rnd(2,4)
-	set_scaling_to_map_size
+	number_of_objects 					4			/* Number of BIRD_B per group */
+	number_of_groups            		2		    /* Number of BIRD_B groups */
+	group_variance						2           /* BIRDS_B randomly varied by up to the amount specified */	
+	set_scaling_to_map_size							/* Scales object amount to map size */
 }
 /* Regicide game mode - spawns KING and CASTLE when Regicide is active */
 if REGICIDE
