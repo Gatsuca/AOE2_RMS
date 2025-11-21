@@ -63,7 +63,6 @@ endif
 #const T_WORKSHOP           1647	/* Trading Workshop building */
 #const GOODS                1321	/* Trade goods object */
 #const MARKET_STALL         2284	/* Market stall building */
-#const HOUSE_RUBBLE3        1435	/* Ruined house variant 3 */
 #const CASTLE_RUINS         1837    /* Castle ruins object */
 
 /* PLAYER_SETUP: Configures how players are positioned and global parameters */
