@@ -683,7 +683,7 @@ create_object RELIC
 create_object HERDABLE_A
 {
    	number_of_objects 					2			/* Number of HERDABLE_A per-group */
-   	number_of_groups					12			/* Number of HERDABLE_A groups */
+   	number_of_groups					6			/* Number of HERDABLE_A groups */
 	set_scaling_to_map_size			        		/* Scales with map size */
    	set_loose_grouping								/* HERDABLE_A spawn loosely */
    	set_gaia_object_only							/* Belongs to Gaia */
@@ -695,7 +695,7 @@ create_object HERDABLE_A
 create_object HERDABLE_B
 {
    	number_of_objects 					2			/* Number of HERDABLE_B per-group */
-   	number_of_groups					12			/* Number of HERDABLE_B groups */
+   	number_of_groups					6			/* Number of HERDABLE_B groups */
 	set_scaling_to_map_size			        		/* Scales with map size */
    	set_loose_grouping								/* HERDABLE_B spawn loosely */
    	set_gaia_object_only							/* Belongs to Gaia */
@@ -707,8 +707,8 @@ create_object HERDABLE_B
 /* Huntables */	
 create_object HUNTABLE
 {
-   	number_of_objects 					5			/* Number of HUNTABLE per-group */
-   	number_of_groups					16			/* Number of HUNTABLE groups */
+   	number_of_objects 					4			/* Number of HUNTABLE per-group */
+   	number_of_groups					12			/* Number of HUNTABLE groups */
 	set_scaling_to_map_size			        		/* Scales with map size */
    	set_loose_grouping								/* HUNTABLE spawn loosely */
    	set_gaia_object_only							/* Belongs to Gaia */
@@ -717,11 +717,11 @@ create_object HUNTABLE
    	min_distance_group_placement 		3			/* Minimum 3 tiles between HUNTABLE */
 	min_distance_to_players 			16		    /* Minimum 16 tiles from players */
 }
-
+/* Lurables */
 create_object LURABLE_A
 {
    	number_of_objects 					1			/* Number of LURABLE_A per-group */
-   	number_of_groups					12			/* Number of LURABLE_A groups */
+   	number_of_groups					8			/* Number of LURABLE_A groups */	
 	set_scaling_to_map_size			        		/* Scales with map size */
    	set_loose_grouping								/* LURABLE_A spawn loosely */
    	set_gaia_object_only							/* Belongs to Gaia */
@@ -732,8 +732,8 @@ create_object LURABLE_A
 }
 create_object LURABLE_B
 {
-   	number_of_objects 					1			/* Number of LURABLE_B per-group */								
-   	number_of_groups					12			/* Number of LURABLE_B groups */
+   	number_of_objects 					1			/* Number of LURABLE_B per-group */	
+	number_of_groups					8			/* Number of LURABLE_B groups */								
 	set_scaling_to_map_size			        		/* Scales with map size */
    	set_loose_grouping								/* LURABLE_B spawn loosely */
    	set_gaia_object_only							/* Belongs to Gaia */
