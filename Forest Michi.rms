@@ -121,7 +121,7 @@ if KING_OT_HILL
 create_land 
 {
 	terrain_type 				LAYER_A		/* Set the Terrain type for this land to CLIFF_TILE */
-	land_percent 					8		/* 8% land mass */
+	land_percent 			(LENGTH / 20)	/* 8% land mass */
 	land_position 					50 50	/* Land located in center of map (50% 50%) */
 	other_zone_avoidance_distance 	12		/* Minimum 16-tile gap between different zones */
 	clumping_factor 				30		/* How much tiles prefer to be together next to other tiles of the same clump. */
@@ -136,38 +136,38 @@ create_player_lands 						/* Creates a land for every player with specified para
 	terrain_type	            LAYER_A  	/* Terrain type for player starting clearings */
 	set_zone_by_team              			/* Team members share same zone - their lands can grow to touch each other */
 	if LENGTH > 220							/* If mapsize is larger than LARGE, adjust map scaling */
-	land_percent    	    	rnd(70,80)  /* 70-72% land mass */
-	circle_radius 					46 2	/* Positions players in circle: 40% radius from center, 2 variance */
+	land_percent    	    		60  	/* 70-72% land mass */
+	circle_radius 					45 1	/* Positions players in circle: 40% radius from center, 2 variance */
 	base_size                     	24    	/* 24-tile square land origin size */
-	other_zone_avoidance_distance 	24    	/* 24-tile distance between player zones */
+	other_zone_avoidance_distance 	22    	/* 24-tile distance between player zones */
 	elseif LENGTH 220                       /* If mapsize is LARGE, adjust map scaling */
-	land_percent    	    	rnd(60,70)  /* 72-74% land mass */
-	circle_radius 					44 2	/* Positions players in circle: 38% radius from center, 2 variance */
+	land_percent    	    		50  	/* 72-74% land mass */
+	circle_radius 					44 1	/* Positions players in circle: 38% radius from center, 2 variance */
 	base_size 						22		/* 22-tile square land origin size */
 	other_zone_avoidance_distance 	20    	/* 20-tile distance between player zones */
 	elseif LENGTH 200                       /* If mapsize is NORMAL, adjust map scaling */
-	land_percent    	    	rnd(50,60)  /* 74-76% land mass */
-	circle_radius 					42 2	/* Positions players in circle: 36% radius from center, 2 variance */
+	land_percent    	    		45  	/* 74-76% land mass */
+	circle_radius 					42 1	/* Positions players in circle: 36% radius from center, 2 variance */
 	base_size                     	20    	/* 20-tile square land origin size */
 	other_zone_avoidance_distance 	18    	/* 18-tile distance between player zones */
 	elseif LENGTH 168                       /* If mapsize is MEDIUM, adjust map scaling */
-	land_percent    	    	rnd(40,50)  /* 76-78% land mass */  
-	circle_radius 					40 2	/* Positions players in circle: 32% radius from center, 2 variance */
+	land_percent    	    		40  	/* 76-78% land mass */  
+	circle_radius 					41 1	/* Positions players in circle: 32% radius from center, 2 variance */
 	base_size                     	18    	/* 18-tile square land origin size */
 	other_zone_avoidance_distance 	16    	/* 16-tile distance between player zones */
     elseif LENGTH 144                     	/* If mapsize is SMALL, adjust map scaling */
-	land_percent    	    	rnd(30,40)  /* 78-80% land mass */  
-	circle_radius 					39 1   	/* Positions players in circle: 31% radius from center, 1 variance */
+	land_percent    	    		35  	/* 78-80% land mass */  
+	circle_radius 					40 1   	/* Positions players in circle: 31% radius from center, 1 variance */
 	base_size                     	16    	/* 16-tile square land origin size */
 	other_zone_avoidance_distance 	14    	/* 14-tile distance between player zones */
 	elseif LENGTH 120                    	/* If mapsize is TINY, adjust map scaling */
-	land_percent    	    	rnd(20,30)  /* 80-82% land mass */  
-	circle_radius 					37 1   	/* Positions players in circle: 30% radius from center, 0 variance */
+	land_percent    	    		30	  	/* 80-82% land mass */  
+	circle_radius 					39 1   	/* Positions players in circle: 30% radius from center, 0 variance */
 	base_size                     	12    	/* 12-tile square land origin size */
 	other_zone_avoidance_distance 	12    	/* 12-tile distance between player zones */
 	elseif LENGTH < 120                     /* If mapsize is less than TINY, adjust map scaling */
-	land_percent    	    	rnd(10,20)  	/* 82-84% land mass */  
-	circle_radius 					48 0   	/* Positions players in circle: 30% radius from center, 0 variance */
+	land_percent    	    		25 		/* 5% land mass */  
+	circle_radius 					46 0   	/* Positions players in circle: 30% radius from center, 0 variance */
 	base_size                     	8    	/* 8-tile square land origin size */
 	other_zone_avoidance_distance 	8    	/* 8-tile distance between player zones */
 	endif
@@ -177,17 +177,14 @@ create_player_lands 						/* Creates a land for every player with specified para
 
 /* ELEVATION_GENERATION: Create hills */
 <ELEVATION_GENERATION>
-if LENGTH < 120
-else
-	create_elevation 6 								/* Sets max height allowed in create_elevation (0-16) */
-	{
-		base_terrain 				WOODIES			/* Terrain type to apply elevation */
-		set_scale_by_size							/* Scales tile count by map size */
-		number_of_tiles 			2048			/* Amount of elevated tiles */
-		number_of_clumps 			(LENGTH / 4)	/* Amount of hills LENGTH divided by 2 */
-		enable_balanced_elevation					/* To keep elevation balanced across entirety of map */
-	}
-endif
+create_elevation 6 								/* Sets max height allowed in create_elevation (0-16) */
+{
+	base_terrain 				LAYER_A			/* Terrain type to apply elevation */
+	set_scale_by_size							/* Scales tile count by map size */
+	number_of_tiles 			2048			/* Amount of elevated tiles */
+	number_of_clumps 			(LENGTH / 4)	/* Amount of hills LENGTH divided by 2 */
+	enable_balanced_elevation					/* To keep elevation balanced across entirety of map */
+}
 
 /* TERRAIN_GENERATION: Replace terrains with other terrains */
 <TERRAIN_GENERATION>
@@ -217,7 +214,7 @@ create_terrain WOODIES
 	number_of_clumps 				8				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scale clumps by map size */
 	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
-	clumping_factor 				rnd(10,20)		/* How much WOODIES prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				rnd(8,10)		/* How much WOODIES prefer to be together next to other tiles of the same clump. */
 }
 /* Placing WOODIES_B */
 create_terrain WOODIES_B
@@ -262,7 +259,7 @@ create_terrain LAYER_E
 {
 	base_terrain 				LAYER_A				/* Terrain type to create new terrain from */
 	land_percent 				3					/* How much LAYER_E is present on terrain in percent */
-	number_of_clumps 			16				/* Number of clumps to be created */
+	number_of_clumps 			16					/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 				1					/* 1 - new terrain is masked over the base terrain and inherits its properties */
 }
@@ -277,13 +274,13 @@ create_connect_teams_lands
 	/* Replace all terrain in path with corresponding path */
 	default_terrain_replacement CESTA									
 	/* Terrain cost scale of 1-100 - lower values are more favorable - 0 = impassable  */	 
-	terrain_cost 		LAYER_A 			1		
-	terrain_cost 		LAYER_B 			1		
-	terrain_cost 		LAYER_C 			1		
-	terrain_cost 		LAYER_E 			1		
-	terrain_cost 		WOODIES 			10		
-	terrain_cost 		WOODIES_B 			10
-	terrain_cost 		WOODIES_C 			10				
+	terrain_cost 		LAYER_A 			10		
+	terrain_cost 		LAYER_B 			10		
+	terrain_cost 		LAYER_C 			10		
+	terrain_cost 		LAYER_E 			10		
+	terrain_cost 		WOODIES 			50		
+	terrain_cost 		WOODIES_B 			50
+	terrain_cost 		WOODIES_C 			50				
 	/* Terrain size radius and variance for replaced terrain */ 
 	terrain_size 		LAYER_A 			1 1	
 	terrain_size 		WOODIES 			1 1		
