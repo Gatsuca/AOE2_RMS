@@ -1,7 +1,7 @@
 /* *****************************************************************************
  * Forest Michi - Made by Gatsuca 
  * *****************************************************************************
- * A Forest stands bewteen each team in this wooded battlefield.
+ * A Forest stands between each team in this wooded battlefield.
  * Chop and blow your way through the wall of trees to reach your foes!
  * ***************************************************************************** 
  * git: https://github.com/Gatsuca/AOE2_RMS
@@ -120,10 +120,10 @@ base_terrain WOODIES						/* Sets default terrain covering entire map */
 if KING_OT_HILL								
 create_land 
 {
-	terrain_type 				LAYER_A		/* Set the Terrain type for this land to CLIFF_TILE */
-	land_percent 			(LENGTH / 20)	/* 8% land mass */
+	terrain_type 				LAYER_A		/* Set the Terrain type for this land to LAYER_A */
+	land_percent 			(LENGTH / 20)	/* land mass (LENGTH/20) */
 	land_position 					50 50	/* Land located in center of map (50% 50%) */
-	other_zone_avoidance_distance 	12		/* Minimum 16-tile gap between different zones */
+	other_zone_avoidance_distance 	12		/* Minimum 12-tile gap between different zones */
 	clumping_factor 				30		/* How much tiles prefer to be together next to other tiles of the same clump. */
 	zone 							13		/* Land zone set to 13 */
 	land_id 						13		/* Land id set to 13 */
@@ -136,38 +136,38 @@ create_player_lands 						/* Creates a land for every player with specified para
 	terrain_type	            LAYER_A  	/* Terrain type for player starting clearings */
 	set_zone_by_team              			/* Team members share same zone - their lands can grow to touch each other */
 	if LENGTH > 220							/* If mapsize is larger than LARGE, adjust map scaling */
-	land_percent    	    		60  	/* 70-72% land mass */
-	circle_radius 					45 1	/* Positions players in circle: 40% radius from center, 2 variance */
+	land_percent    	    		60  	/* 60% land mass */
+	circle_radius 					45 1	/* Positions players in circle: 45% radius from center, 1 variance */
 	base_size                     	24    	/* 24-tile square land origin size */
-	other_zone_avoidance_distance 	22    	/* 24-tile distance between player zones */
-	elseif LENGTH 220                       /* If mapsize is LARGE, adjust map scaling */
-	land_percent    	    		50  	/* 72-74% land mass */
-	circle_radius 					44 1	/* Positions players in circle: 38% radius from center, 2 variance */
-	base_size 						22		/* 22-tile square land origin size */
 	other_zone_avoidance_distance 	20    	/* 20-tile distance between player zones */
-	elseif LENGTH 200                       /* If mapsize is NORMAL, adjust map scaling */
-	land_percent    	    		45  	/* 74-76% land mass */
-	circle_radius 					42 1	/* Positions players in circle: 36% radius from center, 2 variance */
-	base_size                     	20    	/* 20-tile square land origin size */
+	elseif LENGTH 220                       /* If mapsize is LARGE, adjust map scaling */
+	land_percent    	    		50  	/* 50% land mass */
+	circle_radius 					44 1	/* Positions players in circle: 44% radius from center, 1 variance */
+	base_size 						22		/* 22-tile square land origin size */
 	other_zone_avoidance_distance 	18    	/* 18-tile distance between player zones */
-	elseif LENGTH 168                       /* If mapsize is MEDIUM, adjust map scaling */
-	land_percent    	    		40  	/* 76-78% land mass */  
-	circle_radius 					41 1	/* Positions players in circle: 32% radius from center, 2 variance */
-	base_size                     	18    	/* 18-tile square land origin size */
+	elseif LENGTH 200                       /* If mapsize is NORMAL, adjust map scaling */
+	land_percent    	    		45  	/* 45% land mass */
+	circle_radius 					42 1	/* Positions players in circle: 42% radius from center, 1 variance */
+	base_size                     	20    	/* 20-tile square land origin size */
 	other_zone_avoidance_distance 	16    	/* 16-tile distance between player zones */
-    elseif LENGTH 144                     	/* If mapsize is SMALL, adjust map scaling */
-	land_percent    	    		35  	/* 78-80% land mass */  
-	circle_radius 					40 1   	/* Positions players in circle: 31% radius from center, 1 variance */
-	base_size                     	16    	/* 16-tile square land origin size */
+	elseif LENGTH 168                       /* If mapsize is MEDIUM, adjust map scaling */
+	land_percent    	    		40  	/* 40% land mass */  
+	circle_radius 					41 1	/* Positions players in circle: 41% radius from center, 1 variance */
+	base_size                     	18    	/* 18-tile square land origin size */
 	other_zone_avoidance_distance 	14    	/* 14-tile distance between player zones */
-	elseif LENGTH 120                    	/* If mapsize is TINY, adjust map scaling */
-	land_percent    	    		30	  	/* 80-82% land mass */  
-	circle_radius 					39 1   	/* Positions players in circle: 30% radius from center, 0 variance */
-	base_size                     	12    	/* 12-tile square land origin size */
+	elseif LENGTH 144                     	/* If mapsize is SMALL, adjust map scaling */
+	land_percent    	    		35  	/* 35% land mass */  
+	circle_radius 					40 1   	/* Positions players in circle: 40% radius from center, 1 variance */
+	base_size                     	16    	/* 16-tile square land origin size */
 	other_zone_avoidance_distance 	12    	/* 12-tile distance between player zones */
+	elseif LENGTH 120                    	/* If mapsize is TINY, adjust map scaling */
+	land_percent    	    		30	  	/* 30% land mass */  
+	circle_radius 					39 1   	/* Positions players in circle: 39% radius from center, 1 variance */
+	base_size                     	12    	/* 12-tile square land origin size */
+	other_zone_avoidance_distance 	10    	/* 10-tile distance between player zones */
 	elseif LENGTH < 120                     /* If mapsize is less than TINY, adjust map scaling */
-	land_percent    	    		25 		/* 5% land mass */  
-	circle_radius 					46 0   	/* Positions players in circle: 30% radius from center, 0 variance */
+	land_percent    	    		25 		/* 25% land mass */  
+	circle_radius 					46 0   	/* Positions players in circle: 46% radius from center, 0 variance */
 	base_size                     	8    	/* 8-tile square land origin size */
 	other_zone_avoidance_distance 	8    	/* 8-tile distance between player zones */
 	endif
@@ -182,7 +182,7 @@ create_elevation 6 								/* Sets max height allowed in create_elevation (0-16)
 	base_terrain 				LAYER_A			/* Terrain type to apply elevation */
 	set_scale_by_size							/* Scales tile count by map size */
 	number_of_tiles 			2048			/* Amount of elevated tiles */
-	number_of_clumps 			(LENGTH / 4)	/* Amount of hills LENGTH divided by 2 */
+	number_of_clumps 			(LENGTH / 4)	/* Amount of hills LENGTH divided by 4 */
 	enable_balanced_elevation					/* To keep elevation balanced across entirety of map */
 }
 
@@ -375,9 +375,9 @@ create_object LURABLE_B
 /* Forage bushes  */	
 create_object KERICEK 	
 {	
-    number_of_objects 					6		/* How many FORAGE tiles per group */
+	number_of_objects 					6		/* How many FORAGE tiles per group */
 	number_of_groups 					1		/* How many groups of FORAGE per player */
-    set_tight_grouping							/* Grouping type set to tight for this object */
+	set_tight_grouping							/* Grouping type set to tight for this object */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	set_place_for_every_player					/* Places FORAGE for each player land */
 	min_distance_to_players 			6		/* Minimum distance of FORAGE generation from land origin */
@@ -469,17 +469,17 @@ create_object STONE
 /* Predators */
 create_object PREDATOR_A
 {
-	number_of_objects 					12			/* Number of PREDATOR_A per group */
+	number_of_objects 					8			/* Number of PREDATOR_A per group */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 	min_distance_to_players 			24			/* Minimum distance PREDATOR_A to be spawned in relation to players */
-	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 32 tiles */
+	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */
 }
 create_object PREDATOR_B
 {
 	number_of_objects 					8			/* Number of PREDATOR_B per group */
 	set_scaling_to_map_size							/* Scales object amount to map size */
 	min_distance_to_players 			24			/* Minimum distance PREDATOR_B to be spawned in relation to players */
-	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 32 tiles */	
+	temp_min_distance_group_placement 	16			/* Avoid placement of this create_object type within 16 tiles */	
 }
 /* Birds */
 create_object BIRDS_A
@@ -491,8 +491,8 @@ create_object BIRDS_A
 }
 create_object BIRDS_B
 {
-	number_of_objects 					4			/* Number of BIRD_B per group */
-	number_of_groups            		2		    /* Number of BIRD_B groups */
+	number_of_objects 					4			/* Number of BIRDS_B per group */
+	number_of_groups            		2		    /* Number of BIRDS_B groups */
 	group_variance						2           /* BIRDS_B randomly varied by up to the amount specified */	
 	set_scaling_to_map_size							/* Scales object amount to map size */
 }
