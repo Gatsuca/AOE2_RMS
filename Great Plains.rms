@@ -28,8 +28,10 @@ else
 		percent_chance 10 	#define PH_MEDISOUTH
 		percent_chance 6 	#define PH_TROPHICALSOUTH
 		percent_chance 8 	#define PH_TROPHICALEAST
-		percent_chance 10 	#define PH_DESERT
-		percent_chance 10 	#define PH_AFRICAN		
+		percent_chance 5 	#define PH_DESERT
+		percent_chance 5 	#define PH_AFRICAN
+		percent_chance 5 	#define PH_AFRICAN_B
+		percent_chance 5 	#define PH_AFRICAN_E		
 		percent_chance 6 	#define PH_ASIAN
 		percent_chance 6 	#define PH_ASIAN_B
 		percent_chance 6 	#define PH_AUTUMN
@@ -76,7 +78,10 @@ elseif PH_SPRING_C			water_definition WD_CALM
 elseif PH_MEDISOUTH			water_definition WD_CALM	
 elseif PH_TROPHICALSOUTH	water_definition WD_TROPICAL	
 elseif PH_TROPHICALSOUTH_B	water_definition WD_TROPICAL	
-elseif PH_TROPHICALEAST		water_definition WD_TROPICAL	
+elseif PH_TROPHICALEAST		water_definition WD_TROPICAL
+elseif PH_AFRICAN 			water_definition WD_MURKY
+elseif PH_AFRICAN_B 		water_definition WD_MURKY	
+elseif PH_AFRICAN_E 		water_definition WD_MURKY	
 elseif PH_ASIAN 			water_definition WD_MURKY	
 elseif PH_ASIAN_B			water_definition WD_MURKY	
 elseif PH_AUTUMN			water_definition WD_CHOPPY	
@@ -105,11 +110,11 @@ create_player_lands 						/* Creates a land for every player with specified para
 
 /* ELEVATION_GENERATION: Create rolling hills */
 <ELEVATION_GENERATION>
-create_elevation 4 							/* Sets max height allowed in create_elevation (0-16) */
+create_elevation 3 							/* Sets max height allowed in create_elevation (0-16) */
 {
 	base_terrain 		LAYER_A				/* Terrain type to apply elevation */
 	set_scale_by_size						/* Scales tile count by map size */
-	number_of_tiles 	2048				/* Amount of elevated tiles */
+	number_of_tiles 	1024				/* Amount of elevated tiles */
 	number_of_clumps 	(LENGTH / 2)		/* Amount of hills LENGTH divided by 2 */
 	enable_balanced_elevation				/* To keep elevation balanced across entirety of map */
 }
@@ -118,10 +123,10 @@ create_elevation 4 							/* Sets max height allowed in create_elevation (0-16) 
 <CLIFF_GENERATION>
 min_number_of_cliffs		(LENGTH / 12)
 max_number_of_cliffs 		(LENGTH / 8)
-min_length_of_cliff 			3				/* Minimum length of a cliff */
-max_length_of_cliff 			16				/* Maximum length of a cliff */
-cliff_curliness 				40				/* Curliness of cliffs (0-100) */
-min_distance_cliffs 			2				/* Minimum distance between cliffs */
+min_length_of_cliff 			4				/* Minimum length of a cliff */
+max_length_of_cliff 			12				/* Maximum length of a cliff */
+cliff_curliness 				30				/* Curliness of cliffs (0-100) */
+min_distance_cliffs 			3				/* Minimum distance between cliffs */
 min_terrain_distance 			1				/* Minimum distance between cliffs and water */
 
 /* TERRAIN_GENERATION: Replace terrains with other terrains */
@@ -149,7 +154,7 @@ create_terrain WOODIES
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
 	land_percent 					16				/* How much WOODIES is present on terrain in percent - sparse for plains */
-	number_of_clumps 				16				/* Number of clumps to be created */
+	number_of_clumps 				8				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas	20				/* Sets terrain generation to avoid player base area */
 	clumping_factor 				10				/* How much WOODIES prefer to be together next to other tiles of the same clump. */
@@ -159,17 +164,17 @@ create_terrain WOODIES_B
 {
 	base_terrain 					WOODIES			/* Terrain type to create new terrain from */
 	land_percent 					4				/* How much WOODIES_B is present on terrain in percent */
-	number_of_clumps 				24				/* Number of clumps to be created */
+	number_of_clumps 				32				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
-	clumping_factor 				15				/* How much WOODIES_B prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				10				/* How much WOODIES_B prefer to be together next to other tiles of the same clump. */
 }
 /* Placing WOODIES_C - minimal */
 create_terrain WOODIES_C
 {
 	base_terrain 					WOODIES			/* Terrain type to create new terrain from */
 	land_percent 					2				/* How much WOODIES_C is present on terrain in percent */
-	number_of_clumps 				16				/* Number of clumps to be created */
+	number_of_clumps 				32				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
 	clumping_factor 				10				/* How much WOODIES_C prefer to be together next to other tiles of the same clump. */
@@ -208,17 +213,15 @@ create_terrain VODA
 	set_scale_by_groups								/* Scales clumps by map size */	
 	spacing_to_other_terrain_types 	4				/* Spacing to other terrains in tiles */
 	set_avoid_player_start_areas 	(LENGTH / 4)
-	height_limits					0 0
+	height_limits					0 0				/* Limits height of water to base level */
 }
 
 /* CONNECTION_GENERATION: Draws connections between lands and players */
 <CONNECTION_GENERATION>
 accumulate_connections 					/* Allows you to replace terrains created in previous connections with new terrains */
-create_connect_all_players_land 
+create_connect_teams_lands 
 {					
-	replace_terrain WOODIES LAYER_A
-	replace_terrain WOODIES_B LAYER_A
-	replace_terrain WOODIES_C LAYER_A
+	default_terrain_replacement CESTA		/* Replace connecting terrain with CESTA */
 	replace_terrain VODA MELCINA			/* Replace VODA with MELCINA for shallow crossings */
 	/* Terrain cost scale of 1-100 - lower values are more favorable - 0 = impassable  */ 
 	terrain_cost 	LAYER_A 		1		
@@ -228,7 +231,7 @@ create_connect_all_players_land
 	terrain_cost 	WOODIES 		10		
 	terrain_cost 	WOODIES_B 		10
 	terrain_cost 	WOODIES_C 		10
-	terrain_cost 	MELCINA 			30		/* Shallow water crossings */
+	terrain_cost 	MELCINA 		30
 	terrain_cost 	VODA	 		50
 	/* Terrain size radius and variance for replaced terrain */ 
 	terrain_size 	VODA 				2 1
