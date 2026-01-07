@@ -22,19 +22,19 @@ if ANTIQUITY_MODE
 else 
 	start_random
 		percent_chance 8 	#define PH_ALPINE
-		percent_chance 5 	#define PH_SPRING
-		percent_chance 5 	#define PH_SPRING_B
-		percent_chance 5 	#define PH_SPRING_C
-		percent_chance 11 	#define PH_MEDISOUTH
-		percent_chance 12 	#define PH_TROPHICALSOUTH
+		percent_chance 6 	#define PH_SPRING
+		percent_chance 6 	#define PH_SPRING_B
+		percent_chance 6 	#define PH_SPRING_C
+		percent_chance 10 	#define PH_MEDISOUTH
+		percent_chance 6 	#define PH_TROPHICALSOUTH
 		percent_chance 8 	#define PH_TROPHICALEAST
 		percent_chance 10 	#define PH_DESERT
 		percent_chance 10 	#define PH_AFRICAN		
 		percent_chance 6 	#define PH_ASIAN
 		percent_chance 6 	#define PH_ASIAN_B
-		percent_chance 5 	#define PH_AUTUMN
-		percent_chance 5 	#define PH_AUTUMN_B
-		percent_chance 4 	#define PH_FROZEN
+		percent_chance 6 	#define PH_AUTUMN
+		percent_chance 6 	#define PH_AUTUMN_B
+		percent_chance 6 	#define PH_FROZEN
 	end_random
 endif
 #define PH_EXTENDEDSEASONS
@@ -65,7 +65,7 @@ grouped_by_team  						/* Players positioned together in circle with variation *
 else
 random_placement  						/* Players positioned randomly in circle with variation */
 endif
-ai_info_map_type ARABIA 0 0 0  			/* Tells AI: MapType=CUSTOM, IsNomad=0, IsMichi=0, ShowType=0 */
+ai_info_map_type ARABIA 0 0 0  			/* Tells AI: MapType=ARABIA, IsNomad=0, IsMichi=0, ShowType=0 */
 behavior_version 1						/* Used for versioning changes that might affect how existing maps generate */
 /* Set water texture set for map based on biome */
 if PH_ALPINE				water_definition WD_CHOPPY	
@@ -88,25 +88,13 @@ endif
 /* LAND_GENERATION: Creates large terrain areas including player starting areas */
 <LAND_GENERATION>
 base_terrain LAYER_A						/* Sets default terrain covering entire map */
-/* Create water features - multiple small lakes scattered randomly */
-create_land 
-{
-	generate_mode 					1		/* Generate mode to 1 to for random generation positioning */
-	terrain_type 				LAYER_A		/* Terrain type for this create_land */
-	land_percent    	    	rnd(12, 24) /* 92-96% land mass */
-	land_id							20		/* Land ID for this create_land */	
-	zone 							20		/* Zone for this create_land */
-	land_position				50 50		
-	other_zone_avoidance_distance 	12		/* Distance in tiles that this land avoids other zones - keeps lakes separate */
-	clumping_factor 				10		/* Preference for tiles of the same clump to clump together 0-25+ */
-}
 /* Create player lands with open plains */
 create_player_lands 						/* Creates a land for every player with specified parameters */
 {
 	generate_mode 1
 	terrain_type	            LAYER_A  	/* Terrain type for player starting clearings */
 	set_zone_by_team              			/* Team members share same zone - their lands can grow to touch each other */
-	land_percent    	    		16  	/* 16% land mass */  
+	land_percent    	    		32  	/* 32% land mass */  
 	circle_radius 					40 0   	/* Positions players in circle: 40% radius from center, 0 variance */
 	base_size                     	14    	/* 14-tile square land origin size */
 	border_fuzziness              	0    	/* 0% border adherence (0=none, 100=sharp borders) */
@@ -117,7 +105,7 @@ create_player_lands 						/* Creates a land for every player with specified para
 
 /* ELEVATION_GENERATION: Create rolling hills */
 <ELEVATION_GENERATION>
-create_elevation 4. 							/* Sets max height allowed in create_elevation (0-16) */
+create_elevation 4 							/* Sets max height allowed in create_elevation (0-16) */
 {
 	base_terrain 		LAYER_A				/* Terrain type to apply elevation */
 	set_scale_by_size						/* Scales tile count by map size */
@@ -211,12 +199,12 @@ create_terrain LAYER_E
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
 }
-/* Water depth creation for rivers and lakes */
+/* Water creation - multiple small lakes scattered across the map */
 create_terrain VODA
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					3				/* How much VODA is present on terrain in percent */
-	number_of_clumps 				1				/* Number of clumps to be created */
+	land_percent 					4				/* How much VODA is present on terrain in percent */
+	number_of_clumps 				1				/* Number of clumps to be created - multiple small lakes */
 	set_scale_by_groups								/* Scales clumps by map size */	
 	spacing_to_other_terrain_types 	4				/* Spacing to other terrains in tiles */
 	set_avoid_player_start_areas 	(LENGTH / 4)
