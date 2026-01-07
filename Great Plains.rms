@@ -114,6 +114,16 @@ create_elevation 4 							/* Sets max height allowed in create_elevation (0-16) 
 	enable_balanced_elevation				/* To keep elevation balanced across entirety of map */
 }
 
+/* CLIFF_GENERATION: Create cliffs */
+<CLIFF_GENERATION>
+min_number_of_cliffs		(LENGTH / 12)
+max_number_of_cliffs 		(LENGTH / 8)
+min_length_of_cliff 			3				/* Minimum length of a cliff */
+max_length_of_cliff 			16				/* Maximum length of a cliff */
+cliff_curliness 				40				/* Curliness of cliffs (0-100) */
+min_distance_cliffs 			2				/* Minimum distance between cliffs */
+min_terrain_distance 			1				/* Minimum distance between cliffs and water */
+
 /* TERRAIN_GENERATION: Replace terrains with other terrains */
 <TERRAIN_GENERATION>
 /* Color correction selection - Based upon Biome selected prior */
@@ -134,16 +144,6 @@ elseif PH_FROZEN			color_correction	CC_ARCTIC
 else
 endif
 
-/* CLIFF_GENERATION: Create cliffs */
-<CLIFF_GENERATION>
-min_number_of_cliffs		(LENGTH / 12)
-max_number_of_cliffs 		(LENGTH / 8)
-min_length_of_cliff 			3				/* Minimum length of a cliff */
-max_length_of_cliff 			16				/* Maximum length of a cliff */
-cliff_curliness 				40				/* Curliness of cliffs (0-100) */
-min_distance_cliffs 			2				/* Minimum distance between cliffs */
-min_terrain_distance 			1				/* Minimum distance between cliffs and water */
-
 /* Placing WOODIES - sparse forests for Great Plains */
 create_terrain WOODIES
 {
@@ -152,7 +152,7 @@ create_terrain WOODIES
 	number_of_clumps 				16				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas	20				/* Sets terrain generation to avoid player base area */
-	clumping_factor 				25				/* How much WOODIES prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				10				/* How much WOODIES prefer to be together next to other tiles of the same clump. */
 }
 /* Placing WOODIES_B - even sparser */
 create_terrain WOODIES_B
