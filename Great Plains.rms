@@ -123,8 +123,8 @@ create_elevation 3 							/* Sets max height allowed in create_elevation (0-16) 
 
 /* CLIFF_GENERATION: Create cliffs */
 <CLIFF_GENERATION>
-min_number_of_cliffs		(LENGTH / 12)
-max_number_of_cliffs 		(LENGTH / 8)
+min_number_of_cliffs		(LENGTH / 16)
+max_number_of_cliffs 		(LENGTH / 10)
 min_length_of_cliff 			4				/* Minimum length of a cliff */
 max_length_of_cliff 			12				/* Maximum length of a cliff */
 cliff_curliness 				30				/* Curliness of cliffs (0-100) */
@@ -143,6 +143,9 @@ elseif PH_MEDISOUTH			color_correction	CC_SUMMER
 elseif PH_TROPHICALSOUTH	color_correction	CC_RAINFOREST
 elseif PH_TROPHICALSOUTH_B	color_correction	CC_RAINFOREST
 elseif PH_TROPHICALEAST		color_correction	CC_JUNGLE
+elseif PH_AFRICAN 			color_correction	CC_SAVANNAH
+elseif PH_AFRICAN_B 		color_correction	CC_DESERT	
+elseif PH_AFRICAN_E 		color_correction	CC_SAVANNAH	
 elseif PH_ASIAN 			color_correction	CC_SUMMER
 elseif PH_ASIAN_B			color_correction	CC_STEPPES
 elseif PH_AUTUMN			color_correction	CC_AUTUMN
@@ -159,7 +162,7 @@ create_terrain WOODIES
 	number_of_clumps 				8				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas	20				/* Sets terrain generation to avoid player base area */
-	clumping_factor 				10				/* How much WOODIES prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				rnd(1,8)		/* How much WOODIES prefer to be together next to other tiles of the same clump. */
 }
 /* Placing WOODIES_B - even sparser */
 create_terrain WOODIES_B
@@ -169,7 +172,7 @@ create_terrain WOODIES_B
 	number_of_clumps 				32				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
-	clumping_factor 				10				/* How much WOODIES_B prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				8				/* How much WOODIES_B prefer to be together next to other tiles of the same clump. */
 }
 /* Placing WOODIES_C - minimal */
 create_terrain WOODIES_C
@@ -179,7 +182,7 @@ create_terrain WOODIES_C
 	number_of_clumps 				32				/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	set_avoid_player_start_areas					/* Sets terrain generation to avoid player base area */
-	clumping_factor 				10				/* How much WOODIES_C prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				8				/* How much WOODIES_C prefer to be together next to other tiles of the same clump. */
 }
 /* Seasonal terrain mixing for land Decor */
 create_terrain LAYER_B
@@ -189,6 +192,7 @@ create_terrain LAYER_B
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
+	clumping_factor 				8				/* How much LAYER_B prefer to be together next to other tiles of the same clump. */
 }
 create_terrain LAYER_C
 {
@@ -197,6 +201,7 @@ create_terrain LAYER_C
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
+	clumping_factor 				8				/* How much LAYER_C prefer to be together next to other tiles of the same clump. */
 }
 create_terrain LAYER_E
 {
@@ -205,15 +210,16 @@ create_terrain LAYER_E
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
+	clumping_factor 				8				/* How much LAYER_E prefer to be together next to other tiles of the same clump. */
 }
 /* Water creation - multiple small lakes scattered across the map */
 create_terrain VODA
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					4				/* How much VODA is present on terrain in percent */
+	land_percent 					2				/* How much VODA is present on terrain in percent */
 	number_of_clumps 				1				/* Number of clumps to be created - multiple small lakes */
 	set_scale_by_groups								/* Scales clumps by map size */	
-	spacing_to_other_terrain_types 	4				/* Spacing to other terrains in tiles */
+	spacing_to_other_terrain_types 	3				/* Spacing to other terrains in tiles */
 	set_avoid_player_start_areas 	(LENGTH / 4)
 	height_limits					0 0				/* Limits height of water to base level */
 }
@@ -305,24 +311,24 @@ create_object ROCK_STONE
 create_object GOLD 	
 {	
 	number_of_objects 				rnd(3,5)	/* How many GOLD tiles per group */
-	number_of_groups 					2		/* How many groups of GOLD per player */
+	number_of_groups 					3		/* How many groups of GOLD per player */
 	set_scaling_to_map_size
 	actor_area_to_place_in 				69		/* Must be placed within actor area 69 */
 	set_tight_grouping							/* Grouping type set to tight for this GOLD */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
-	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
+	avoid_forest_zone 					1		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
 /* Far Stone */	
 create_object STONE 	
 {	
 	number_of_objects 				rnd(3,5)	/* How many STONE tiles per group */
-	number_of_groups 					2		/* How many groups of STONE per player */
+	number_of_groups 					3		/* How many groups of STONE per player */
 	set_scaling_to_map_size
 	actor_area_to_place_in 				69		/* Must be placed within actor area 69 */
 	set_tight_grouping							/* Grouping type set to tight for this STONE */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
-	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
+	avoid_forest_zone 					1		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
 /* Relic Placement */	
@@ -343,7 +349,6 @@ create_object STRAGGLER
 	number_of_objects 					8		/* STRAGGLER per player - reduced for open plains */
 	set_gaia_object_only        				/* Required for gaia objects placed per-player */
 	set_place_for_every_player  				/* Places trees for each player land */
-	terrain_to_place_on 		LAYER_A			/* Limits objects to LAYER_A */
 	min_distance_to_players 			4   	/* 4 tiles from land origin */
 	max_distance_to_players 			16		/* 16 tiles from land origin */
 	set_circular_placement      				/* Uses circular distance instead of square */
@@ -389,20 +394,23 @@ create_object KERICEK
 /* Fish in water features */	
 create_object MELKARYBA	
 {	
-	number_of_objects 					32		/* Number of FISH in regular water */
-	min_distance_group_placement 		3		/* Avoid placement of this create_object type within 4 tiles */
-}	
+	number_of_objects 					32		/* Number of MELKARYBA in water */
+	min_distance_group_placement 		3		/* Minimum distance between group members */
+	set_scaling_to_map_size						/* Scale number of MELKARYBA relative to mapsize */
+}
 create_object FISH_A	
 {	
-	number_of_objects					1
-	number_of_groups 					12		/* Number of FISH in regular water */
-	min_distance_group_placement 		3 		/* Minimum distance between group members */
+	number_of_objects					8		/* Number of FISH_A in water */
+	min_distance_group_placement 		2 		/* Minimum distance between group members */
+	set_scaling_to_map_size						/* Scale number of FISH_A relative to mapsize */	
+	terrain_to_place_on					VODA	/* Terrain FISA_A to be placed on */
 }	
 create_object FISH_B	
 {	
-	number_of_objects					1
-	number_of_groups 					12		/* Number of FISH in regular water */
-	min_distance_group_placement 		3 		/* Minimum distance between group members */
+	number_of_objects					8		/* Number of FISH_B in water */
+	min_distance_group_placement 		2 		/* Minimum distance between group members */
+	set_scaling_to_map_size						/* Scale number of FISH_B relative to mapsize */
+	terrain_to_place_on					VODA	/* Terrain FISA_B to be placed on */
 }	
 /* Huntables */	
 create_object HUNTABLE 	
@@ -413,8 +421,8 @@ create_object HUNTABLE
 	set_loose_grouping							/* Grouping type set to loose for this object */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	set_place_for_every_player					/* Places HUNTABLE for each player land */
-	min_distance_to_players 			12		/* Minimum distance of HUNTABLE generation from player origin */
-	max_distance_to_players 			24		/* Maximum distance of HUNTABLE generation from player origin */
+	min_distance_to_players 			16		/* Minimum distance of HUNTABLE generation from player origin */
+	max_distance_to_players 			32		/* Maximum distance of HUNTABLE generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */
 	require_path 1								/* Requires a path to the HUNTABLE */
 }	
@@ -453,21 +461,21 @@ create_object PREDATOR_A
 create_object PREDATOR_B
 {
 	number_of_objects 					1		/* Number of PREDATOR_B per group */
-	number_of_groups 			(LENGTH / 16) 	/* Number of groups of PREDATOR_B */		
-	min_distance_to_players 			28		/* Minimum distance of PREDATOR_B generation from player origin */
+	number_of_groups 			(LENGTH / 8) 	/* Number of groups of PREDATOR_B */		
+	min_distance_to_players 			32		/* Minimum distance of PREDATOR_B generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */	
 	temp_min_distance_group_placement 	12		/* Avoid placement of this create_object type within 12 tiles */
 }
 /* Birds */
 create_object BIRDS_A
 {
-	number_of_objects 				rnd(4,8)
-	set_scaling_to_map_size
+	number_of_objects 				rnd(4,8)	/* Number of BIRDS_A per group */
+	set_scaling_to_map_size						/* Scale number of BIRDS_A relative to mapsize */
 }
 create_object BIRDS_B
 {
-	number_of_objects 				rnd(2,4)
-	set_scaling_to_map_size
+	number_of_objects 				rnd(2,4)	/* Number of BIRDS_B per group */
+	set_scaling_to_map_size						/* Scale number of BIRDS_B relative to mapsize */
 }
 /* Regicide game mode - spawns KING and CASTLE when Regicide is active */
 if REGICIDE
