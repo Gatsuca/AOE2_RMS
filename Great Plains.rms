@@ -60,6 +60,8 @@ elseif MAPSIZE_TINY 		#const LENGTH 120	/* TINY 120x120 mapsize */
 elseif MAPSIZE_MINI 		#const LENGTH 80	/* MINI 80x80 mapsize */
 endif
 
+#const ROCK_STONE 839
+
 /* PLAYER_SETUP: Configures how players are positioned and global parameters */
 <PLAYER_SETUP>
 if FIXED_POSITIONS
@@ -183,7 +185,7 @@ create_terrain WOODIES_C
 create_terrain LAYER_B
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					15				/* How much LAYER_B is present on terrain in percent */
+	land_percent 					16				/* How much LAYER_B is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
@@ -191,7 +193,7 @@ create_terrain LAYER_B
 create_terrain LAYER_C
 {
 	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					10				/* How much LAYER_C is present on terrain in percent */
+	land_percent 					12				/* How much LAYER_C is present on terrain in percent */
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
@@ -289,18 +291,25 @@ create_object GOLD
 	avoid_forest_zone 2							/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
+/* Eyecandy for far resources */
+create_object ROCK_STONE 
+{ 
+    number_of_objects					1		/* Number of ROCK_STONE per group */
+    number_of_groups 					4		/* Number of groups of ROCK_STONE */
+	group_variance						2
+	min_distance_to_players 			32		/* Minimum distance of ROCK_STONE generation from player origin */
+	set_scaling_to_map_size
+	actor_area 							69		/* Actor area ID 69 */
+}
 /* Far Gold */	
 create_object GOLD 	
 {	
 	number_of_objects 				rnd(3,5)	/* How many GOLD tiles per group */
-	number_of_groups 					3		/* How many groups of GOLD per player */
-	set_scaling_to_player_number				/* Scales groups to player count */
+	number_of_groups 					2		/* How many groups of GOLD per player */
+	set_scaling_to_map_size
+	actor_area_to_place_in 				69		/* Must be placed within actor area 69 */
 	set_tight_grouping							/* Grouping type set to tight for this GOLD */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
-	min_distance_to_players 			32		/* Minimum distance of GOLD generation from player origin */
-	max_distance_to_players 			64		/* Maximum distance of GOLD generation from player origin */
-	min_distance_group_placement 		8		/* Minimum distance between group members */
-	temp_min_distance_group_placement 	40		/* Avoid placement of this create_object type within 40 tiles */
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
@@ -308,14 +317,11 @@ create_object GOLD
 create_object STONE 	
 {	
 	number_of_objects 				rnd(3,5)	/* How many STONE tiles per group */
-	number_of_groups 					3		/* How many groups of STONE per player */
-	set_scaling_to_player_number				/* Scales groups to player count */
+	number_of_groups 					2		/* How many groups of STONE per player */
+	set_scaling_to_map_size
+	actor_area_to_place_in 				69		/* Must be placed within actor area 69 */
 	set_tight_grouping							/* Grouping type set to tight for this STONE */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
-	min_distance_to_players 			32		/* Minimum distance of STONE generation from player origin */
-	max_distance_to_players 			64		/* Maximum distance of STONE generation from player origin */
-	min_distance_group_placement 		8		/* Minimum distance between group members */
-	temp_min_distance_group_placement 	40		/* Avoid placement of this create_object type within 40 tiles */
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
@@ -416,7 +422,7 @@ create_object HUNTABLE
 create_object LURABLE_A	
 {	
 	number_of_objects 					1		/* How many LURABLE_A per group */
-	number_of_groups 					3		/* How many groups of LURABLE_A per player */
+	number_of_groups 					2		/* How many groups of LURABLE_A per player */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	set_place_for_every_player					/* Places LURABLE_A for each player land */
 	min_distance_to_players 			12		/* Minimum distance of LURABLE_A generation from player origin */
@@ -427,7 +433,7 @@ create_object LURABLE_A
 create_object LURABLE_B	
 {	
 	number_of_objects 					1		/* How many LURABLE_B per group */
-	number_of_groups 					3		/* How many groups of LURABLE_B per player */
+	number_of_groups 					2		/* How many groups of LURABLE_B per player */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	set_place_for_every_player					/* Places LURABLE_B for each player land */
 	min_distance_to_players 			12		/* Minimum distance of LURABLE_B generation from player origin */
@@ -455,12 +461,12 @@ create_object PREDATOR_B
 /* Birds */
 create_object BIRDS_A
 {
-	number_of_objects rnd(4,8)
+	number_of_objects 				rnd(4,8)
 	set_scaling_to_map_size
 }
 create_object BIRDS_B
 {
-	number_of_objects rnd(2,4)
+	number_of_objects 				rnd(2,4)
 	set_scaling_to_map_size
 }
 /* Regicide game mode - spawns KING and CASTLE when Regicide is active */
