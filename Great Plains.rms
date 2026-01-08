@@ -153,7 +153,17 @@ elseif PH_AUTUMN_B			color_correction	CC_AUTUMN
 elseif PH_FROZEN			color_correction	CC_ARCTIC
 else
 endif
-
+/* Water creation - multiple small lakes scattered across the map */
+create_terrain VODA
+{
+	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
+	land_percent 					2				/* How much VODA is present on terrain in percent */
+	number_of_clumps 				1				/* Number of clumps to be created - multiple small lakes */
+	set_scale_by_groups								/* Scales clumps by map size */	
+	spacing_to_other_terrain_types 	3				/* Spacing to other terrains in tiles */
+	set_avoid_player_start_areas 	(LENGTH / 4)
+	height_limits					0 0				/* Limits height of water to base level */
+}
 /* Placing WOODIES - sparse forests for Great Plains */
 create_terrain WOODIES
 {
@@ -192,7 +202,7 @@ create_terrain LAYER_B
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
-	clumping_factor 				8				/* How much LAYER_B prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				4				/* How much LAYER_B prefer to be together next to other tiles of the same clump. */
 }
 create_terrain LAYER_C
 {
@@ -201,7 +211,7 @@ create_terrain LAYER_C
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
-	clumping_factor 				8				/* How much LAYER_C prefer to be together next to other tiles of the same clump. */
+	clumping_factor 				4				/* How much LAYER_C prefer to be together next to other tiles of the same clump. */
 }
 create_terrain LAYER_E
 {
@@ -210,18 +220,7 @@ create_terrain LAYER_E
 	number_of_clumps 				1024			/* Number of clumps to be created */
 	set_scale_by_groups								/* Scales clumps by map size */
 	terrain_mask 					1				/* 1 - new terrain is masked over the base terrain and inherits its properties */
-	clumping_factor 				8				/* How much LAYER_E prefer to be together next to other tiles of the same clump. */
-}
-/* Water creation - multiple small lakes scattered across the map */
-create_terrain VODA
-{
-	base_terrain 					LAYER_A			/* Terrain type to create new terrain from */
-	land_percent 					2				/* How much VODA is present on terrain in percent */
-	number_of_clumps 				1				/* Number of clumps to be created - multiple small lakes */
-	set_scale_by_groups								/* Scales clumps by map size */	
-	spacing_to_other_terrain_types 	3				/* Spacing to other terrains in tiles */
-	set_avoid_player_start_areas 	(LENGTH / 4)
-	height_limits					0 0				/* Limits height of water to base level */
+	clumping_factor 				4				/* How much LAYER_E prefer to be together next to other tiles of the same clump. */
 }
 
 /* CONNECTION_GENERATION: Draws connections between lands and players */
@@ -256,6 +255,7 @@ create_object TOWN_CENTER
 	set_place_for_every_player    				/* Places TC for each player land */
 	find_closest								/* Place at closest valid location to land origin */
 }
+
 /* Villager placement - automatic count based on civilization */
 create_object VILLAGER
 {
@@ -263,6 +263,7 @@ create_object VILLAGER
 	min_distance_to_players 			3		/* Minimum distance of VILLAGER generation from player origin */
 	max_distance_to_players 			5		/* Maximum distance of VILLAGER generation from player origin */
 }	
+
 /* Scout placement */	
 create_object SCOUT	
 {	
@@ -270,6 +271,7 @@ create_object SCOUT
 	min_distance_to_players 			4		/* Minimum distance of SCOUT generation from player origin */		
 	max_distance_to_players 			6		/* Maximum distance of SCOUT generation from player origin */		
 }
+
 /* Near Stone */
 create_object STONE 
 {
@@ -283,6 +285,7 @@ create_object STONE
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
+
 /* Near Gold */	
 create_object GOLD 	
 {	
@@ -296,7 +299,8 @@ create_object GOLD
 	min_distance_group_placement 		4		/* Minimum distance between group members */
 	avoid_forest_zone 2							/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
-}	
+}
+
 /* Eyecandy for far resources */
 create_object ROCK_STONE 
 { 
@@ -307,6 +311,7 @@ create_object ROCK_STONE
 	set_scaling_to_map_size
 	actor_area 							69		/* Actor area ID 69 */
 }
+
 /* Far Gold */	
 create_object GOLD 	
 {	
@@ -318,7 +323,8 @@ create_object GOLD
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	avoid_forest_zone 					1		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
-}	
+}
+
 /* Far Stone */	
 create_object STONE 	
 {	
@@ -330,7 +336,8 @@ create_object STONE
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	avoid_forest_zone 					1		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
-}	
+}
+
 /* Relic Placement */	
 create_object RELIC	
 {	
@@ -342,19 +349,21 @@ create_object RELIC
 	temp_min_distance_group_placement 	20		/* Avoid placement of this create_object type within 20 tiles */
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped RELIC */
 	enable_tile_shuffling						/* Increases randomness of object positions */
-}	
+}
+
 /* STRAGGLER trees - sparse for plains */	
 create_object STRAGGLER	
 {	
-	number_of_objects 					8		/* STRAGGLER per player - reduced for open plains */
+	number_of_objects 					12		/* STRAGGLER per player - reduced for open plains */
 	set_gaia_object_only        				/* Required for gaia objects placed per-player */
 	set_place_for_every_player  				/* Places trees for each player land */
 	min_distance_to_players 			4   	/* 4 tiles from land origin */
-	max_distance_to_players 			16		/* 16 tiles from land origin */
+	max_distance_to_players 			12		/* 16 tiles from land origin */
 	set_circular_placement      				/* Uses circular distance instead of square */
 	min_distance_group_placement 		0 		/* No minimum distance between group members */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }
+
 /* Herdables */
 create_object HERDABLE_A
 {
@@ -366,7 +375,8 @@ create_object HERDABLE_A
 	max_distance_to_players 			9		/* Maximum distance of HERDABLE_A generation from land origin */
 	set_circular_placement						/* Uses circular distance instead of square */
 	require_path 1								/* Requires a path to the HERDABLE_A */
-}	
+}
+
 create_object HERDABLE_B	
 {	
 	number_of_objects 					2		/* How many HERDABLE_B per group */				
@@ -377,7 +387,8 @@ create_object HERDABLE_B
 	max_distance_to_players 			9		/* Maximum distance of HERDABLE_B generation from land origin */
 	set_circular_placement						/* Uses circular distance instead of square */
 	require_path 1								/* Requires a path to the HERDABLE_B */
-}	
+}
+
 /* Forage bushes  */	
 create_object KERICEK 	
 {	
@@ -390,28 +401,30 @@ create_object KERICEK
 	max_distance_to_players 			10		/* Maximum distance of FORAGE generation from land origin */
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
 	require_path 1								/* Requires a path to the FORAGE */
-}	
-/* Fish in water features */	
-create_object MELKARYBA	
-{	
-	number_of_objects 					32		/* Number of MELKARYBA in water */
-	min_distance_group_placement 		3		/* Minimum distance between group members */
-	set_scaling_to_map_size						/* Scale number of MELKARYBA relative to mapsize */
 }
-create_object FISH_A	
+
+/* Fish in water features */	
+create_object MELKARYBA
 {	
-	number_of_objects					8		/* Number of FISH_A in water */
+	number_of_objects					8		/* Number of FISH in water */
 	min_distance_group_placement 		2 		/* Minimum distance between group members */
-	set_scaling_to_map_size						/* Scale number of FISH_A relative to mapsize */	
-	terrain_to_place_on					VODA	/* Terrain FISA_A to be placed on */
+	set_scaling_to_map_size						/* Scale number of FISH relative to mapsize */	
 }	
-create_object FISH_B	
+
+create_object FISH_A
 {	
-	number_of_objects					8		/* Number of FISH_B in water */
+	number_of_objects					8		/* Number of FISH in water */
 	min_distance_group_placement 		2 		/* Minimum distance between group members */
-	set_scaling_to_map_size						/* Scale number of FISH_B relative to mapsize */
-	terrain_to_place_on					VODA	/* Terrain FISA_B to be placed on */
+	set_scaling_to_map_size						/* Scale number of FISH relative to mapsize */	
 }	
+
+create_object FISH_B
+{	
+	number_of_objects					4		/* Number of FISH in water */
+	min_distance_group_placement 		2 		/* Minimum distance between group members */
+	set_scaling_to_map_size						/* Scale number of FISH relative to mapsize */	
+}	
+
 /* Huntables */	
 create_object HUNTABLE 	
 {	
@@ -421,11 +434,11 @@ create_object HUNTABLE
 	set_loose_grouping							/* Grouping type set to loose for this object */
 	set_gaia_object_only						/* Required for gaia objects placed per-player */
 	set_place_for_every_player					/* Places HUNTABLE for each player land */
-	min_distance_to_players 			16		/* Minimum distance of HUNTABLE generation from player origin */
-	max_distance_to_players 			32		/* Maximum distance of HUNTABLE generation from player origin */
+	min_distance_to_players 			12		/* Minimum distance of HUNTABLE generation from player origin */
+	max_distance_to_players 			24		/* Maximum distance of HUNTABLE generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */
-	require_path 1								/* Requires a path to the HUNTABLE */
-}	
+}
+
 /* Lurables */	
 create_object LURABLE_A	
 {	
@@ -436,8 +449,8 @@ create_object LURABLE_A
 	min_distance_to_players 			12		/* Minimum distance of LURABLE_A generation from player origin */
 	max_distance_to_players 			24		/* Maximum distance of LURABLE_A generation from player origin */
 	min_distance_group_placement 		5 		/* Minimum distance between group members */
-	require_path 1								/* Requires a path to the LURABLE_A */
 }	
+
 create_object LURABLE_B	
 {	
 	number_of_objects 					1		/* How many LURABLE_B per group */
@@ -447,36 +460,40 @@ create_object LURABLE_B
 	min_distance_to_players 			12		/* Minimum distance of LURABLE_B generation from player origin */
 	max_distance_to_players 			24		/* Maximum distance of LURABLE_B generation from player origin */
 	min_distance_group_placement 		5 		/* Minimum distance between group members */
-	require_path 1								/* Requires a path to the LURABLE_B */
 }
+
 /* Predators */
 create_object PREDATOR_A
 {
 	number_of_objects 					1		/* Number of PREDATOR_A per group */
-	number_of_groups 			(LENGTH / 16) 	/* Number of groups of PREDATOR_A */	
+	number_of_groups 					8 		/* Number of groups of PREDATOR_A */
+	set_scaling_to_map_size						/* Scale number of PREDATOR_A relative to mapsize */	
 	min_distance_to_players 			24		/* Minimum distance of PREDATOR_A generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */
-	temp_min_distance_group_placement 	16		/* Avoid placement of this create_object type within 16 tiles */
 }
+
 create_object PREDATOR_B
 {
 	number_of_objects 					1		/* Number of PREDATOR_B per group */
-	number_of_groups 			(LENGTH / 8) 	/* Number of groups of PREDATOR_B */		
-	min_distance_to_players 			32		/* Minimum distance of PREDATOR_B generation from player origin */
-	min_distance_group_placement 		8 		/* Minimum distance between group members */	
-	temp_min_distance_group_placement 	12		/* Avoid placement of this create_object type within 12 tiles */
+	number_of_groups 					8 		/* Number of groups of PREDATOR_B */
+	set_scaling_to_map_size						/* Scale number of PREDATOR_B relative to mapsize */		
+	min_distance_to_players 			28		/* Minimum distance of PREDATOR_B generation from player origin */
+	min_distance_group_placement 		8 		/* Minimum distance between group members */
 }
+
 /* Birds */
 create_object BIRDS_A
 {
-	number_of_objects 				rnd(4,8)	/* Number of BIRDS_A per group */
+	number_of_objects 					8		/* Number of BIRDS_A per group */
 	set_scaling_to_map_size						/* Scale number of BIRDS_A relative to mapsize */
 }
+
 create_object BIRDS_B
 {
-	number_of_objects 				rnd(2,4)	/* Number of BIRDS_B per group */
+	number_of_objects 					4		/* Number of BIRDS_B per group */
 	set_scaling_to_map_size						/* Scale number of BIRDS_B relative to mapsize */
 }
+
 /* Regicide game mode - spawns KING and CASTLE when Regicide is active */
 if REGICIDE
 create_object KING
