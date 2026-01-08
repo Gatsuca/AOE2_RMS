@@ -2,7 +2,7 @@
  * Great Plains - Made by Gatsuca 
  * *****************************************************************************
  * Open rolling fields with sparse forests and water features.
- * Battle across the vast plains to dominate!
+ * Battle across the vast plains and control resource veins to dominate!
  * ***************************************************************************** 
  * git: https://github.com/Gatsuca/AOE2_RMS
  * ***************************************************************************** */
@@ -60,7 +60,44 @@ elseif MAPSIZE_TINY 		#const LENGTH 120	/* TINY 120x120 mapsize */
 elseif MAPSIZE_MINI 		#const LENGTH 80	/* MINI 80x80 mapsize */
 endif
 
-#const ROCK_STONE 839
+/* Season Specific Settings */
+if PH_ALPINE			
+#const ROCK_1 623		
+elseif PH_ALPINE_B	
+#const ROCK_1 623
+elseif PH_SPRING	
+#const ROCK_1 623			
+elseif PH_SPRING_B	
+#const ROCK_1 623			
+elseif PH_SPRING_C
+#const ROCK_1 623				
+elseif PH_MEDISOUTH	
+#const ROCK_1 1323			
+elseif PH_TROPHICALSOUTH
+#const ROCK_1 1149		
+elseif PH_TROPHICALSOUTH_B	
+#const ROCK_1 1149		
+elseif PH_TROPHICALEAST
+#const ROCK_1 1148			
+elseif PH_AFRICAN 
+#const ROCK_1 2515			
+elseif PH_AFRICAN_B
+#const ROCK_1 2515 			
+elseif PH_AFRICAN_E 
+#const ROCK_1 2515			
+elseif PH_ASIAN
+#const ROCK_1 1323 				
+elseif PH_ASIAN_B
+#const ROCK_1 1323				
+elseif PH_AUTUMN
+#const ROCK_1 623				
+elseif PH_AUTUMN_B
+#const ROCK_1 623				
+elseif PH_FROZEN
+#const ROCK_1 623				
+else
+#const ROCK_1 623
+endif
 
 /* PLAYER_SETUP: Configures how players are positioned and global parameters */
 <PLAYER_SETUP>
@@ -255,7 +292,6 @@ create_object TOWN_CENTER
 	set_place_for_every_player    				/* Places TC for each player land */
 	find_closest								/* Place at closest valid location to land origin */
 }
-
 /* Villager placement - automatic count based on civilization */
 create_object VILLAGER
 {
@@ -263,7 +299,6 @@ create_object VILLAGER
 	min_distance_to_players 			3		/* Minimum distance of VILLAGER generation from player origin */
 	max_distance_to_players 			5		/* Maximum distance of VILLAGER generation from player origin */
 }	
-
 /* Scout placement */	
 create_object SCOUT	
 {	
@@ -271,7 +306,6 @@ create_object SCOUT
 	min_distance_to_players 			4		/* Minimum distance of SCOUT generation from player origin */		
 	max_distance_to_players 			6		/* Maximum distance of SCOUT generation from player origin */		
 }
-
 /* Near Stone */
 create_object STONE 
 {
@@ -285,7 +319,6 @@ create_object STONE
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }	
-
 /* Near Gold */	
 create_object GOLD 	
 {	
@@ -300,18 +333,16 @@ create_object GOLD
 	avoid_forest_zone 2							/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }
-
 /* Eyecandy for far resources */
-create_object ROCK_STONE 
+create_object ROCK_1 
 { 
-    number_of_objects					1		/* Number of ROCK_STONE per group */
-    number_of_groups 					4		/* Number of groups of ROCK_STONE */
+    number_of_objects					1		/* Number of BOULDER per group */
+    number_of_groups 					4		/* Number of groups of BOULDER */
 	group_variance						2
-	min_distance_to_players 			32		/* Minimum distance of ROCK_STONE generation from player origin */
+	min_distance_to_players 			32		/* Minimum distance of BOULDER generation from player origin */
 	set_scaling_to_map_size
 	actor_area 							69		/* Actor area ID 69 */
 }
-
 /* Far Gold */	
 create_object GOLD 	
 {	
@@ -324,7 +355,6 @@ create_object GOLD
 	avoid_forest_zone 					1		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }
-
 /* Far Stone */	
 create_object STONE 	
 {	
@@ -337,7 +367,6 @@ create_object STONE
 	avoid_forest_zone 					1		/* Avoid FOREST tile to prevent trapped Resource */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }
-
 /* Relic Placement */	
 create_object RELIC	
 {	
@@ -350,7 +379,6 @@ create_object RELIC
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped RELIC */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }
-
 /* STRAGGLER trees - sparse for plains */	
 create_object STRAGGLER	
 {	
@@ -363,7 +391,6 @@ create_object STRAGGLER
 	min_distance_group_placement 		0 		/* No minimum distance between group members */
 	enable_tile_shuffling						/* Increases randomness of object positions */
 }
-
 /* Herdables */
 create_object HERDABLE_A
 {
@@ -376,7 +403,6 @@ create_object HERDABLE_A
 	set_circular_placement						/* Uses circular distance instead of square */
 	require_path 1								/* Requires a path to the HERDABLE_A */
 }
-
 create_object HERDABLE_B	
 {	
 	number_of_objects 					2		/* How many HERDABLE_B per group */				
@@ -388,7 +414,6 @@ create_object HERDABLE_B
 	set_circular_placement						/* Uses circular distance instead of square */
 	require_path 1								/* Requires a path to the HERDABLE_B */
 }
-
 /* Forage bushes  */	
 create_object KERICEK 	
 {	
@@ -402,7 +427,6 @@ create_object KERICEK
 	avoid_forest_zone 					2		/* Avoid FOREST tile to prevent trapped Resource */
 	require_path 1								/* Requires a path to the FORAGE */
 }
-
 /* Fish in water features */	
 create_object MELKARYBA
 {	
@@ -410,21 +434,18 @@ create_object MELKARYBA
 	min_distance_group_placement 		2 		/* Minimum distance between group members */
 	set_scaling_to_map_size						/* Scale number of FISH relative to mapsize */	
 }	
-
 create_object FISH_A
 {	
 	number_of_objects					8		/* Number of FISH in water */
 	min_distance_group_placement 		2 		/* Minimum distance between group members */
 	set_scaling_to_map_size						/* Scale number of FISH relative to mapsize */	
 }	
-
 create_object FISH_B
 {	
 	number_of_objects					4		/* Number of FISH in water */
 	min_distance_group_placement 		2 		/* Minimum distance between group members */
 	set_scaling_to_map_size						/* Scale number of FISH relative to mapsize */	
 }	
-
 /* Huntables */	
 create_object HUNTABLE 	
 {	
@@ -438,7 +459,6 @@ create_object HUNTABLE
 	max_distance_to_players 			24		/* Maximum distance of HUNTABLE generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */
 }
-
 /* Lurables */	
 create_object LURABLE_A	
 {	
@@ -450,7 +470,6 @@ create_object LURABLE_A
 	max_distance_to_players 			24		/* Maximum distance of LURABLE_A generation from player origin */
 	min_distance_group_placement 		5 		/* Minimum distance between group members */
 }	
-
 create_object LURABLE_B	
 {	
 	number_of_objects 					1		/* How many LURABLE_B per group */
@@ -461,7 +480,6 @@ create_object LURABLE_B
 	max_distance_to_players 			24		/* Maximum distance of LURABLE_B generation from player origin */
 	min_distance_group_placement 		5 		/* Minimum distance between group members */
 }
-
 /* Predators */
 create_object PREDATOR_A
 {
@@ -471,7 +489,6 @@ create_object PREDATOR_A
 	min_distance_to_players 			24		/* Minimum distance of PREDATOR_A generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */
 }
-
 create_object PREDATOR_B
 {
 	number_of_objects 					1		/* Number of PREDATOR_B per group */
@@ -480,14 +497,12 @@ create_object PREDATOR_B
 	min_distance_to_players 			28		/* Minimum distance of PREDATOR_B generation from player origin */
 	min_distance_group_placement 		8 		/* Minimum distance between group members */
 }
-
 /* Birds */
 create_object BIRDS_A
 {
 	number_of_objects 					8		/* Number of BIRDS_A per group */
 	set_scaling_to_map_size						/* Scale number of BIRDS_A relative to mapsize */
 }
-
 create_object BIRDS_B
 {
 	number_of_objects 					4		/* Number of BIRDS_B per group */
@@ -502,7 +517,6 @@ create_object KING
 	min_distance_to_players 			4		/* Minimum distance of KING generation from player origin */
 	find_closest                 				/* Placed at closest valid location to land origin */
 }
-
 create_object CASTLE
 {
 	set_place_for_every_player					/* Places CASTLE for each player land */
