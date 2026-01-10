@@ -145,7 +145,7 @@ create_player_lands 						/* Creates a land for every player with specified para
 	set_zone_by_team              			/* Team members share same zone - their lands can grow to touch each other */
 	number_of_tiles 				1028 	/* Player land size in tiles */
 	if LENGTH < 120
-			circle_radius 			33 0	/* Positions players in circle: 33% radius from center, 0 variance */
+			circle_radius 			33 1	/* Positions players in circle: 33% radius from center, 0 variance */
 			base_size               12		/* 12-tile square land origin size */
 	elseif LENGTH 120
 		if 2_PLAYER_GAME
@@ -157,15 +157,20 @@ create_player_lands 						/* Creates a land for every player with specified para
 		endif
 	elseif LENGTH 144
 		if 2_PLAYER_GAME
-			circle_radius 	rnd(32,34) 6	/* Positions players in circle: 32-34% radius from center, 6 variance */
+			circle_radius 	rnd(34,36) 8	/* Positions players in circle: 34-36% radius from center, 8 variance */
 			base_size               16		/* 16-tile square land origin size */
 		else
 			circle_radius 			35 1	/* Positions players in circle: 35% radius from center, 1 variance */
 			base_size               16		/* 16-tile square land origin size */
 		endif
 	elseif LENGTH 168	
-		circle_radius 				35 2	/* Positions players in circle: 35% radius from center, 2 variance */
-		base_size               	18		/* 18-tile square land origin size */
+		if 2_PLAYER_GAME
+			circle_radius 	rnd(36,38) 8	/* Positions players in circle: 36-38% radius from center, 8 variance */
+			base_size               18		/* 18-tile square land origin size */
+		else
+			circle_radius 			35 2	/* Positions players in circle: 35% radius from center, 2 variance */
+			base_size               18		/* 18-tile square land origin size */
+		endif
 	elseif LENGTH 200	
 		circle_radius 				36 3	/* Positions players in circle: 36% radius from center, 3 variance */
 		base_size               	20		/* 20-tile square land origin size */
@@ -193,19 +198,19 @@ create_elevation 3 							/* Sets max height allowed in create_elevation (0-16) 
 	base_terrain 		LAYER_A				/* Terrain type to apply elevation */
 	set_scale_by_size						/* Scales tile count by map size */
 	number_of_tiles 	1024				/* Amount of elevated tiles */
-	number_of_clumps 	(LENGTH / 2)		/* Amount of hills LENGTH divided by 2 */
+	number_of_clumps 	(LENGTH / 3)		/* Amount of hills LENGTH divided by 3 */
 	enable_balanced_elevation				/* To keep elevation balanced across entirety of map */
 }
 
 /* CLIFF_GENERATION: Create cliffs */
 <CLIFF_GENERATION>
-min_number_of_cliffs		(LENGTH / 16)
-max_number_of_cliffs 		(LENGTH / 10)
-min_length_of_cliff 			4				/* Minimum length of a cliff */
-max_length_of_cliff 			12				/* Maximum length of a cliff */
-cliff_curliness 				30				/* Curliness of cliffs (0-100) */
-min_distance_cliffs 			3				/* Minimum distance between cliffs */
-min_terrain_distance 			1				/* Minimum distance between cliffs and water */
+min_number_of_cliffs		(LENGTH / 16)	/* Minimum number of cliffs in map */	
+max_number_of_cliffs 		(LENGTH / 10)	/* Maximum number of cliffs in map */
+min_length_of_cliff 			4			/* Minimum length of a cliff */
+max_length_of_cliff 			12			/* Maximum length of a cliff */
+cliff_curliness 				30			/* Curliness of cliffs (0-100) */
+min_distance_cliffs 			3			/* Minimum distance between cliffs */
+min_terrain_distance 			1			/* Minimum distance between cliffs and water */
 
 /* TERRAIN_GENERATION: Replace terrains with other terrains */
 <TERRAIN_GENERATION>
